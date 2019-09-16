@@ -1,9 +1,5 @@
 package ui;
 
-import model.User;
-
-import model.HealthyGoal;
-
 public class Main {
     static void greeting(String name) {
         System.out.println("Hello " + name + "!");

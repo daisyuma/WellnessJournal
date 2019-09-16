@@ -1,7 +1,6 @@
-package model;
+package ui;
 
 import java.util.ArrayList;
-import model.User;
 
 public class HealthyGoal {
     private ArrayList<String> fitness;

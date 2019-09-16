@@ -1,5 +1,7 @@
-package model;
+package ui;
 
+
+import ui.HealthyGoal;
 
 import java.util.ArrayList;
 
