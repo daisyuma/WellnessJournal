@@ -1,7 +1,7 @@
-package ui;
+package model;
 
 
-import ui.HealthyGoal;
+import model.HealthyGoal;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,8 @@ public class User {
 
     //interactive methods
 
-   //EFFECTS: prints the healthy goal the user chooses and 1)fitness or 2)food, if the goal is not one of the two choices
+   //EFFECTS: prints the healthy goal the user chooses and 1)fitness or 2)food,
+    // if the goal is not one of the two choices
    //asks user to choose again and return 3
 
     public static int chooseGoal(int choice) {

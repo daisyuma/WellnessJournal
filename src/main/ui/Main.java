@@ -1,5 +1,7 @@
 package ui;
 
+import model.User;
+
 public class Main {
     static void greeting(String name) {
         System.out.println("Hello " + name + "!");
