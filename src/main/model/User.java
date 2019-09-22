@@ -19,10 +19,7 @@ public class User {
 
 
     //constructor
-    public User(String name, double weight, double height) {
-        this.name = name;
-        this.weight = weight; //kg
-        this.height = height; //cm
+    public User() {
         this.entries = new ArrayList<>();
         this.goals = new ArrayList<>();
 
@@ -87,6 +84,24 @@ public class User {
 
 
     //setters
+
+    //MODIfIES: this
+    //EFFECTS: set name
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    //MODIfIES: this
+    //EFFECTS: set height
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    //MODIfIES: this
+    //EFFECTS: set weight
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 
 
     //MODIFIES: this

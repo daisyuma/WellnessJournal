@@ -10,7 +10,10 @@ public class UserTest {
 
     @BeforeEach
     public void runBefore(){
-        myUser =  new User("Daisy", 55, 1.55);
+        myUser =  new User();
+        myUser.setName("Daisy");
+        myUser.setHeight(1.55);
+        myUser.setWeight(55);
         myUser.addEntry("I did 10 push-ups");
         myUser.addGoal("Exercise");
         myUser.addEntry("I drank 7 cups of water, feeling hydrated!");
