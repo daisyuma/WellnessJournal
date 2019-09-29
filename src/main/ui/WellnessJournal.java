@@ -1,54 +1,45 @@
 package ui;
 
+import model.Loadable;
+import model.Saveable;
 import model.User;
+import model.HealthyEntry;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
+
 public class WellnessJournal {
-    private static Scanner scanner;
+    private static Scanner scanner = new Scanner(System.in);
 
-    public WellnessJournal() {
-    }
-
-
-    public void start() {
+    public void start() throws IOException {
         welcome();
-        User myUser = new User();
-        setUp(myUser);
-        //flower will grow
-        //find some way to arrange the sout
 
     }
 
     public void welcome() {
-        String appName = "WellnessLog";
+        String appName = "Bloom";
         System.out.println("Welcome to " + appName);
     }
 
-    public void setUp(User user) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter your name");
-        String name = scanner.nextLine();
-        user.setName(name);
-        System.out.println("Please enter your weight in kg");
-        double weight = scanner.nextDouble();
-        user.setWeight(weight);
-        System.out.println("Lastly, please enter your height in meters!");
-        double height = scanner.nextDouble();
-        user.setHeight(height);
-    }
 
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
         WellnessJournal myJournal = new WellnessJournal();
         myJournal.start();
+        User myUser = new User();
+        myUser.run();
+
     }
 }
 
-//System.out.println("Enter username");
-//
-//    String userName = myObj.nextLine();  // Read user input
-//    System.out.println("Username is: " + userName);  // Output user input
 
 
 

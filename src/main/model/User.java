@@ -1,27 +1,33 @@
 package model;
 
 //reference the Transcript example from lecture
+//reference lab4 -- have like a reward system that goes towards your flower
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Scanner;
 
-/**
- * INVARIANT: healthyEntry list and goal list are the same size
- * each healthyEntry has a goal associated, and vice versa, at matching indices
- */
 
-
-public class User {
+public class User implements Loadable, Saveable {
+    private static Scanner scanner = new Scanner(System.in);
+    private List<String> lines;
     private String name;
-    private double weight;
-    private double height;
-    private ArrayList<String> entries;
-    private ArrayList<String> goals;  //how to make Goal some kind of enumeration //change goal to a class later
+    private List<HealthyEntry> entries;//how to make Goal some kind of enumeration //change goal to a class later
+    private int point;
+    public static int POINTS_FOR_GOAL = 2;
+    public static int POINTS_FOR_GROWTH = 20;
+    public static int GROWTH_REWARD = 1;
 
 
     //constructor
     public User() {
         this.entries = new ArrayList<>();
-        this.goals = new ArrayList<>();
+        this.point = 0;
 
     }
 
@@ -33,54 +39,21 @@ public class User {
         return this.name;
     }
 
-    //EFFECTS: returns the user's weight
-    public double getWeight() {
-        return this.weight;
+    //EFFECTS: given an index, return the entry of that index in the entries list
+    public HealthyEntry getEntry(int i) {
+        return this.entries.get(i);
     }
 
-    //EFFECTS: returns the user's height
-    public double getHeight() {
-        return this.height;
+    public List<HealthyEntry> getEntries() {
+        return this.entries;
     }
 
-    //REQUIRES: course has to be in the list
-    //EFFECTS: calculate and return the user's BMI
-    public double calculateBMI() {
-        double height = this.height;
-        double weight = this.weight;
-        double bmi = (weight / (height * height));
-        return bmi;
+    //EFFECTS: return the number of points user have
+    public int getPoint() {
+        return this.point;
     }
 
 
-    //TODO: ask TA about the calendar
-    // This method should return day, goal, and entry in some consistent String format
-    //requires some form of recursion
-    //REQUIRES: day has to be in the list
-    //EFFECTS: return day, goal name and entry in day:goal:entry
-    public String getGoalAndEntry(String goal) {
-        return null; //stub
-    }
-
-    //EFFECT: return the entry of a given index in the entries list
-    // how can i implement this?
-    public String getEntryIndex(int index) {
-        return "null";  //stub
-    }
-
-    //EFFECT: return the index of a given goal in the goals list
-    public int getGoalIndex(String goal) {
-        return 1; //stub
-    }
-    //* // Function to find the index of an element in a primitive array in Java
-    //public static int find(int[] a, int target)
-    //{
-    //	for (int i = 0; i < a.length; i++)
-    //		if (a[i] == target)
-    //			return i;
-    //
-    //	return -1;
-    //}
 
 
     //setters
@@ -91,54 +64,86 @@ public class User {
         this.name = name;
     }
 
-    //MODIfIES: this
-    //EFFECTS: set height
-    public void setHeight(double height) {
-        this.height = height;
-    }
-
-    //MODIfIES: this
-    //EFFECTS: set weight
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-
-    //MODIFIES: this
-    //EFFECTS: add entry to entries list
-    public void addEntry(String entry) {
-        this.entries.add(entry);
-    }
 
     //REQUIRES: the goal should be one of : Exercise, Drink Water, Eat Healthy
-    //EFFECTS: add goal to list of HealthyGoal
-    public void addGoal(String goal) {
-        this.goals.add(goal);
+    //EFFECTS: add HealthyGoal to entries
+    public void addEntry(HealthyEntry newEntry) {
+        this.entries.add(newEntry);
     }
 
-
-
-    // EFFECTS: Returns the number of entries in the list
+    // EFFECTS: Returns the number of goals in the list
     public int entrySize() {
         return entries.size();
     }
 
-    // EFFECTS: Returns the number of goals in the list
-    public int goalSize() {
-        return goals.size();
-    }
-
-    //EFFECTS: check if entry list and goal list have the same size
-    public boolean checkIndex() {
-        int goalSize = goalSize();
-        int entrySize = entrySize();
-        if (goalSize == entrySize) {
-            return true;
-        } else {
-            return false;
+    //MODIFIES: this
+    //EFFECTS: if user completed their goal of the day
+    //      - add POINTS_FOR_GOAL and then,
+    //        - !!!if eligible, subtract point and allow growth
+    //else don't add point
+    public void addPoint(boolean complete) {
+        if (complete) {
+            this.point = point + POINTS_FOR_GOAL;
         }
     }
+
+    public void run() throws IOException {
+        System.out.println("Please enter your name");
+        String name = scanner.nextLine();
+        setName(name);
+        System.out.println(
+                "Please enter your HealthyGoal. "
+                        + "Your goal should be one of: exercise, drink water, or eat healthy"
+        );
+        String goal = scanner.nextLine();
+        HealthyEntry myEntry = new HealthyEntry();
+        myEntry.setDate();
+        myEntry.setGoal(goal);
+        System.out.println("Please journal");
+        String journal = scanner.nextLine();
+        myEntry.setGoal(goal);
+        myEntry.setJournal(journal);
+        addEntry(myEntry);
+        save();
+        load();
+    }
+
+    public void save() throws IOException {
+        this.lines = Files.readAllLines(Paths.get("outputfile.txt"));
+        List<HealthyEntry> entries = getEntries();
+        for (HealthyEntry entry : entries) {
+            String goal = entry.getGoal();
+            String journal = entry.getJournal();
+            lines.add(goal + " " + journal);
+        }
+
+
+    }
+
+    public static ArrayList<String> splitOnSpace(String line) {
+        String[] splits = line.split(" ");
+        return new ArrayList<>(Arrays.asList(splits));
+    }
+
+
+    public void load() throws IOException {
+        PrintWriter writer = new PrintWriter("outputfile.txt", "UTF-8");
+        for (String line : lines) {
+            ArrayList<String> partsOfLine = splitOnSpace(line);
+            System.out.print("Goal:" + partsOfLine.get(0) + " | ");
+            System.out.println("Journal: " + partsOfLine.get(1));
+            writer.println(line);
+        }
+        writer.close(); //note -- if you miss this, the file will not be written at all.
+
+    }
+
+
+
+
+
 }
+
 
 
 

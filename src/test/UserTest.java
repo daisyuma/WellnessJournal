@@ -4,20 +4,20 @@ import org.junit.jupiter.api.Test;
 import model.User;
 
 import static org.junit.jupiter.api.Assertions.*;
+import model.HealthyEntry;
 
 public class UserTest {
-    public User myUser;
+
+    private User myUser;
+    private HealthyEntry myEntry = new HealthyEntry();
 
     @BeforeEach
     public void runBefore(){
         myUser =  new User();
         myUser.setName("Daisy");
-        myUser.setHeight(1.55);
-        myUser.setWeight(55);
-        myUser.addEntry("I did 10 push-ups");
-        myUser.addGoal("Exercise");
-        myUser.addEntry("I drank 7 cups of water, feeling hydrated!");
-        myUser.addGoal("Drink Water");
+        myEntry.setGoal("exercise");
+        myUser.addEntry(myEntry);
+
     }
 
 
@@ -26,37 +26,41 @@ public class UserTest {
         assertEquals("Daisy", myUser.getUserName());
     }
 
+
+
     @Test
-    public void testGetWeight(){
-        assertEquals(55, myUser.getWeight());
+    public void testAddGoal() {
+
+        assertEquals(myEntry, myUser.getEntry(0));
     }
 
     @Test
-    public void testCalculateBMI(){
-        assertEquals((55/(1.55*1.55)), myUser.calculateBMI());
-    }
-
-    //@Test
-    //public void testGoalAndEntry() {
-    // assertEquals("Exercise: I did 10 push-ups, Drink Water:I drank 7 cups of water, feeling hydrated!");
-    //}
-
-    //@Test
-    //public void testGetEntryIndex() {
-        //assertEquals("I drank 7 cups of water, feeling hydrated!", myuser.getEntryIndex(1));
-    //}
-
-    @Test
-    public void testCheckIndexWhenEqualSize(){
-        assertTrue(myUser.checkIndex());
+    public void testEntrySize() {
+        myUser.addEntry(myEntry);
+        assertEquals(2, myUser.entrySize());
     }
 
     @Test
-    public void testCheckIndexWhenUnequalSize(){
-        myUser.addGoal("Healthy Food");
-        assertFalse(myUser.checkIndex());
+    public void testAddPointComplete() {
+        myUser.addPoint(true);
+        assertEquals(2, myUser.getPoint());
     }
 
+    @Test
+    public void testAddPointIncomplete(){
+        myUser.addPoint(false);
+        assertEquals(0, myUser.getPoint());
+    }
+
+   @Test
+    public void testSave() {
+
+   }
+
+   @Test
+    public void testLoad() {
+
+   }
 
 
 
