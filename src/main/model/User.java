@@ -107,15 +107,13 @@ public class User implements Loadable, Saveable {
     }
 
     public void save() throws IOException {
-        this.lines = Files.readAllLines(Paths.get("outputfile.txt"));
-        List<HealthyEntry> entries = getEntries();
+        lines = Files.readAllLines(Paths.get("outputfile.txt"));
+        List<HealthyEntry> entries = this.getEntries();
         for (HealthyEntry entry : entries) {
             String goal = entry.getGoal();
             String journal = entry.getJournal();
             lines.add(goal + " " + journal);
         }
-
-
     }
 
     public static ArrayList<String> splitOnSpace(String line) {
@@ -129,10 +127,10 @@ public class User implements Loadable, Saveable {
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnSpace(line);
             System.out.print("Goal:" + partsOfLine.get(0) + " ");
-            System.out.println("Journal: "
-                    + partsOfLine.get(1) + " "
-                    + partsOfLine.get(2) + " "
-                    + partsOfLine.get(3));
+            System.out.println("Journal: ");
+//                    + partsOfLine.get(1) + " "
+//                    + partsOfLine.get(2) + " "
+//                    + partsOfLine.get(3));
             writer.println(line);
         }
         writer.close(); //note -- if you miss this, the file will not be written at all.

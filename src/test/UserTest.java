@@ -24,6 +24,7 @@ public class UserTest {
         myUser =  new User();
         myUser.setName("Daisy");
         myEntry.setGoal("exercise");
+        myEntry.setJournal("i feel good");
         myUser.addEntry(myEntry);
 
     }
@@ -38,7 +39,6 @@ public class UserTest {
 
     @Test
     public void testAddGoal() {
-
         assertEquals(myEntry, myUser.getEntry(0));
     }
 
@@ -62,27 +62,27 @@ public class UserTest {
 
     @Test
     public void testGetEntries() {
-        assertEquals(myEntry, myUser.getEntry(0));
+        ArrayList<HealthyEntry> dummyEntries = new ArrayList<>();
+        dummyEntries.add(myEntry);
+        assertEquals(dummyEntries, myUser.getEntries());
     }
 
+
     @Test
-    public void testRun() {
+    public void testRun() throws IOException {
 
     }
 
    @Test
-    public void testSave() throws IOException {
+    public void testLoad() throws IOException {
+       myUser.save();
+       myUser.load();
        String fileName = "outputfile.txt";
        Path path = Paths.get(fileName);
        List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
-       List<String> expected = new ArrayList<String>();
+       List<String> expected = new ArrayList<>();
        expected.add("exercise i feel good");
        assertEquals(expected, allLines);
-   }
-
-   @Test
-    public void testLoad() {
-
    }
 
 
