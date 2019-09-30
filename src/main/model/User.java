@@ -54,8 +54,6 @@ public class User implements Loadable, Saveable {
     }
 
 
-
-
     //setters
 
     //MODIfIES: this
@@ -99,7 +97,7 @@ public class User implements Loadable, Saveable {
         HealthyEntry myEntry = new HealthyEntry();
         myEntry.setDate();
         myEntry.setGoal(goal);
-        System.out.println("Please journal");
+        System.out.println("Please describe how you feel with three words");
         String journal = scanner.nextLine();
         myEntry.setGoal(goal);
         myEntry.setJournal(journal);
@@ -130,16 +128,16 @@ public class User implements Loadable, Saveable {
         PrintWriter writer = new PrintWriter("outputfile.txt", "UTF-8");
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnSpace(line);
-            System.out.print("Goal:" + partsOfLine.get(0) + " | ");
-            System.out.println("Journal: " + partsOfLine.get(1));
+            System.out.print("Goal:" + partsOfLine.get(0) + " ");
+            System.out.println("Journal: "
+                    + partsOfLine.get(1) + " "
+                    + partsOfLine.get(2) + " "
+                    + partsOfLine.get(3));
             writer.println(line);
         }
         writer.close(); //note -- if you miss this, the file will not be written at all.
 
     }
-
-
-
 
 
 }

@@ -21,8 +21,6 @@ public class WellnessJournal {
     }
 
 
-
-
     public static void main(String[] args) throws IOException {
         WellnessJournal myJournal = new WellnessJournal();
         myJournal.start();

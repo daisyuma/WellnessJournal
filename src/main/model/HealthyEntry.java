@@ -62,12 +62,6 @@ public class HealthyEntry {
 //    }
 
 
-    //EFFECTS: print out the date, goal, and entry in some consistent format
-    public void printEntry() {
-        System.out.println(this.date + ";" + this.goal + ";" + this.journal);
-    }
-
-
 }
 
 
