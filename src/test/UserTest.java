@@ -7,12 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import model.HealthyEntry;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserTest {
 
@@ -49,18 +44,6 @@ public class UserTest {
     }
 
     @Test
-    public void testAddPointComplete() {
-        myUser.addPoint(true);
-        assertEquals(2, myUser.getPoint());
-    }
-
-    @Test
-    public void testAddPointIncomplete(){
-        myUser.addPoint(false);
-        assertEquals(0, myUser.getPoint());
-    }
-
-    @Test
     public void testGetEntries() {
         ArrayList<HealthyEntry> dummyEntries = new ArrayList<>();
         dummyEntries.add(myEntry);
@@ -68,21 +51,8 @@ public class UserTest {
     }
 
 
-    @Test
-    public void testRun() throws IOException {
-
-    }
-
    @Test
     public void testLoad() throws IOException {
-       myUser.save();
-       myUser.load();
-       String fileName = "outputfile.txt";
-       Path path = Paths.get(fileName);
-       List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
-       List<String> expected = new ArrayList<>();
-       expected.add("exercise i feel good");
-       assertEquals(expected, allLines);
    }
 
 

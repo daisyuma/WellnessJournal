@@ -5,8 +5,8 @@ package model;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,19 +15,16 @@ import java.util.Scanner;
 
 public class User implements Loadable, Saveable {
     private static Scanner scanner = new Scanner(System.in);
-    private List<String> lines;
     private String name;
     private List<HealthyEntry> entries;//how to make Goal some kind of enumeration //change goal to a class later
-    private int point;
+    private int points;
     public static int POINTS_FOR_GOAL = 2;
-    public static int POINTS_FOR_GROWTH = 20;
-    public static int GROWTH_REWARD = 1;
 
 
     //constructor
     public User() {
         this.entries = new ArrayList<>();
-        this.point = 0;
+        this.points = 0;
 
     }
 
@@ -49,8 +46,8 @@ public class User implements Loadable, Saveable {
     }
 
     //EFFECTS: return the number of points user have
-    public int getPoint() {
-        return this.point;
+    public int getPoints() {
+        return this.points;
     }
 
 
@@ -81,7 +78,7 @@ public class User implements Loadable, Saveable {
     //else don't add point
     public void addPoint(boolean complete) {
         if (complete) {
-            this.point = point + POINTS_FOR_GOAL;
+            this.points = points + POINTS_FOR_GOAL;
         }
     }
 
@@ -91,53 +88,86 @@ public class User implements Loadable, Saveable {
         setName(name);
         System.out.println(
                 "Please enter your HealthyGoal. "
-                        + "Your goal should be one of: exercise, drink water, or eat healthy"
+                        + "Your goal should be one of: exercise, drink_water, or eat_healthy"
         );
         String goal = scanner.nextLine();
         HealthyEntry myEntry = new HealthyEntry();
         myEntry.setDate();
         myEntry.setGoal(goal);
-        System.out.println("Please describe how you feel with three words");
+        System.out.println("How do you feel about your goal?");
         String journal = scanner.nextLine();
         myEntry.setGoal(goal);
         myEntry.setJournal(journal);
         addEntry(myEntry);
-        save();
-        load();
+        saveEntry();
+        loadEntry();
     }
 
-    public void save() throws IOException {
-        lines = Files.readAllLines(Paths.get("outputfile.txt"));
-        List<HealthyEntry> entries = this.getEntries();
-        for (HealthyEntry entry : entries) {
-            String goal = entry.getGoal();
-            String journal = entry.getJournal();
-            lines.add(goal + " " + journal);
+    public void growPlant() {
+        boolean complete = askComplete();
+        addPoint(complete);
+    }
+
+    public boolean askComplete() {
+        System.out.println("Did you complete your goal for today?"
+                + " if yes, please answer yes, if not, please answer no ");
+        String answer = scanner.nextLine();
+        if (answer == "yes") {
+            return true;
+        } else {
+            return false;
         }
     }
 
-    public static ArrayList<String> splitOnSpace(String line) {
-        String[] splits = line.split(" ");
-        return new ArrayList<>(Arrays.asList(splits));
+    public int askSaveEntry() {
+        System.out.println("Would you like to save your result? "
+                + "if yes please enter 1, if not please enter 2");
+        int save = scanner.nextInt();
+        return save;
     }
 
+    public void saveEntry() throws IOException {
+        if (askSaveEntry() == 1) {
+            List<String> lines = Files.readAllLines(Paths.get("outputfile.txt"));
+            List<HealthyEntry> entries = getEntries();
+            for (HealthyEntry entry : entries) {
+                LocalDate date = entry.getDate();
+                String goal = entry.getGoal();
+                String journal = entry.getJournal();
+                lines.add(goal + " " + journal);
+                PrintWriter writer = new PrintWriter("outputfile.txt", "UTF-8");
+                for (String line : lines) {
+                    writer.println(line);
+                }
+                writer.close(); //note -- if you miss this, the file will not be written at all.
+            }
+        }
+    }
 
-    public void load() throws IOException {
-        PrintWriter writer = new PrintWriter("outputfile.txt", "UTF-8");
+    public void loadEntry() throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get("outputfile.txt"));
+        User myUser = new User();
         for (String line : lines) {
-            ArrayList<String> partsOfLine = splitOnSpace(line);
-            System.out.print("Goal:" + partsOfLine.get(0) + " ");
-            System.out.println("Journal: ");
-//                    + partsOfLine.get(1) + " "
-//                    + partsOfLine.get(2) + " "
-//                    + partsOfLine.get(3));
-            writer.println(line);
+            ArrayList<String> partsOfLine = splitOnFirstSpace(line);
+            HealthyEntry entry = new HealthyEntry();
+            entry.setGoal(partsOfLine.get(0));
+            String journal = (partsOfLine.get(1));
+            entry.setJournal(journal);
+            myUser.addEntry(entry);
+            System.out.print("Goal: " + partsOfLine.get(0) + " | ");
+            System.out.println("Journal:" + journal);
         }
-        writer.close(); //note -- if you miss this, the file will not be written at all.
-
     }
 
-
+    public static ArrayList<String> splitOnFirstSpace(String line) {
+        ArrayList<String> splitOnFirstSpace = new ArrayList<>();
+        int i = line.indexOf(" ");
+        String goal = line.substring(0,i);
+        String entry = line.substring(i++);
+        splitOnFirstSpace.add(goal);
+        splitOnFirstSpace.add(entry);
+        return splitOnFirstSpace;
+    }
 }
 
 

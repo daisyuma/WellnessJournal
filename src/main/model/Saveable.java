@@ -8,6 +8,6 @@ public interface Saveable {
     //REQUIRES:
     //EFFECTS: 1.reads each item from the file
     //         2. save fields of each item as strings in the file
-    public void save() throws IOException;
+    public void saveEntry() throws IOException;
 }
 

@@ -3,20 +3,16 @@ package model;
 import java.time.LocalDate;
 
 
-
 public class HealthyEntry {
-//    enum Goal {
-//        EXERCISE, DRINK_WATER, EAT_HEALTHY }
 
-    private LocalDate date;
-    private String goal;
-    private String journal;
+    protected LocalDate date;
+    protected String goal;
+    protected String journal;
 
     //constructor
     public HealthyEntry() {
     }
 
-    //setters
 
     //REQUIRES: goal is one of: "exercise", "drink water", or "eat healthy"
     //EFFECTS: set the goal
@@ -32,8 +28,6 @@ public class HealthyEntry {
         this.journal = journal;
     }
 
-    //getters
-
     public String getGoal() {
         return this.goal;
     }
@@ -45,21 +39,6 @@ public class HealthyEntry {
     public String getJournal() {
         return this.journal;
     }
-
-//    public void checkGoal() {
-//        switch (this.goal) {
-//            case EXERCISE:
-//                System.out.println("My goal is exercise");
-//                break;
-//            case DRINK_WATER:
-//                System.out.println("My goal is drink water");
-//                break;
-//            case EAT_HEALTHY:
-//                System.out.println("My goal is eat healthy");
-//                break;
-//            default:
-//        }
-//    }
 
 
 }
