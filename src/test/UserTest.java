@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import model.User;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import model.HealthyEntry;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserTest {
 
@@ -15,8 +17,8 @@ public class UserTest {
     private HealthyEntry myEntry = new HealthyEntry();
 
     @BeforeEach
-    public void runBefore(){
-        myUser =  new User();
+    public void runBefore() {
+        myUser = new User();
         myUser.setName("Daisy");
         myEntry.setGoal("exercise");
         myEntry.setJournal("i feel good");
@@ -26,10 +28,9 @@ public class UserTest {
 
 
     @Test
-    public void testGetUserName(){
+    public void testGetUserName() {
         assertEquals("Daisy", myUser.getUserName());
     }
-
 
 
     @Test
@@ -51,12 +52,44 @@ public class UserTest {
     }
 
 
-   @Test
-    public void testLoad() throws IOException {
-   }
+    @Test
+    public void testSaveEntry() throws IOException {
+        HealthyEntry otherEntry = new HealthyEntry();
+        otherEntry.setGoal("drink_water");
+        otherEntry.setJournal("today is rainy");
+        myUser.addEntry(otherEntry);
+        myUser.saveEntry();
+    }
 
+    @Test
+    void testLoadEntry() throws IOException {
+        List<HealthyEntry> entry = myUser.getEntries();
+        entry.clear();
+        User user = myUser.loadEntry();
+        List<HealthyEntry> dummyEntries = user.getEntries();
+        HealthyEntry dummyEntry = dummyEntries.get(0);
+        assertEquals("exercise", dummyEntry.getGoal());
+    }
 
+    @Test
+    public void testAddPointComplete() {
+        myUser.addPoint(true);
+        myUser.addPoint(true);
+        assertEquals(4, myUser.getPoints());
+    }
 
+    @Test
+    public void testAddPointIncomplete() {
+        myUser.addPoint(false);
+        assertEquals(0, myUser.getPoints());
+    }
 
-
+    @Test
+    public void testSplitOnFirstSpace() {
+        ArrayList<String> testStringList = myUser.splitOnFirstSpace("today is a nice day");
+        ArrayList<String> dummyStringList = new ArrayList<>();
+        dummyStringList.add("today");
+        dummyStringList.add(" is a nice day");
+        assertEquals(dummyStringList, testStringList);
+    }
 }

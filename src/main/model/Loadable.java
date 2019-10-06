@@ -1,7 +1,8 @@
 package model;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public interface Loadable {
-    public void loadEntry() throws IOException;
+    public Object loadEntry() throws IOException;
 }

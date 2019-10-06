@@ -119,32 +119,30 @@ public class User implements Loadable, Saveable {
         }
     }
 
-    public int askSaveEntry() {
-        System.out.println("Would you like to save your result? "
-                + "if yes please enter 1, if not please enter 2");
-        int save = scanner.nextInt();
-        return save;
-    }
+//    public int askSaveEntry() {
+//        System.out.println("Would you like to save your result? "
+//                + "if yes please enter 1, if not please enter 2");
+//        int save = scanner.nextInt();
+//        return save;
+//    }
 
     public void saveEntry() throws IOException {
-        if (askSaveEntry() == 1) {
-            List<String> lines = Files.readAllLines(Paths.get("outputfile.txt"));
-            List<HealthyEntry> entries = getEntries();
-            for (HealthyEntry entry : entries) {
-                LocalDate date = entry.getDate();
-                String goal = entry.getGoal();
-                String journal = entry.getJournal();
-                lines.add(goal + " " + journal);
-                PrintWriter writer = new PrintWriter("outputfile.txt", "UTF-8");
-                for (String line : lines) {
-                    writer.println(line);
-                }
-                writer.close(); //note -- if you miss this, the file will not be written at all.
+        List<String> lines = Files.readAllLines(Paths.get("outputfile.txt"));
+        List<HealthyEntry> entries = getEntries();
+        for (HealthyEntry entry : entries) {
+            LocalDate date = entry.getDate();
+            String goal = entry.getGoal();
+            String journal = entry.getJournal();
+            lines.add(goal + " " + journal);
+            PrintWriter writer = new PrintWriter("outputfile.txt", "UTF-8");
+            for (String line : lines) {
+                writer.println(line);
             }
+            writer.close(); //note -- if you miss this, the file will not be written at all.
         }
     }
 
-    public void loadEntry() throws IOException {
+    public User loadEntry() throws IOException {
         List<String> lines = Files.readAllLines(Paths.get("outputfile.txt"));
         User myUser = new User();
         for (String line : lines) {
@@ -157,12 +155,13 @@ public class User implements Loadable, Saveable {
             System.out.print("Goal: " + partsOfLine.get(0) + " | ");
             System.out.println("Journal:" + journal);
         }
+        return myUser;
     }
 
     public static ArrayList<String> splitOnFirstSpace(String line) {
         ArrayList<String> splitOnFirstSpace = new ArrayList<>();
         int i = line.indexOf(" ");
-        String goal = line.substring(0,i);
+        String goal = line.substring(0, i);
         String entry = line.substring(i++);
         splitOnFirstSpace.add(goal);
         splitOnFirstSpace.add(entry);
