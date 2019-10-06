@@ -28,10 +28,17 @@ public class TestTomato {
     }
 
     @Test
-    public void testChangeStateFirst() {
+    public void testNoChangeState() {
         myTomato.setHeight(5);
         myTomato.changeStage();
         assertEquals("seed", myTomato.getStage());
+    }
+
+    @Test
+    public void testChangeStateFirst() {
+        myTomato.setHeight(40);
+        myTomato.changeStage();
+        assertEquals("sprout", myTomato.getStage());
     }
 
     @Test

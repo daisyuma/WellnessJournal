@@ -15,13 +15,13 @@ public class Tomato extends Plant {
         }
         if (height >= HEIGHT_TO_CHANGE_STATE_1 && height < HEIGhT_TO_CHANGE_STATE_2) {
             stage = "sprout";
-            System.out.println("fruit is starting to grow!");
+            System.out.println("Tomato: fruit is starting to grow!");
         } else if (height >= HEIGhT_TO_CHANGE_STATE_2 && height < HEIGHT_TO_CHANGE_STATE_FINAL) {
             stage = "fruit";
-            System.out.println("The fruit is growing!");
+            System.out.println("Tomato: The fruit is growing!");
         } else if (height >= HEIGHT_TO_CHANGE_STATE_FINAL) {
             stage = "ripe";
-            System.out.println("I'm ripening!");
+            System.out.println("Tomato: I'm ripening!");
         }
     }
 }

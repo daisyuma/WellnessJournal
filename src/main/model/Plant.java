@@ -44,12 +44,5 @@ public abstract class Plant {
         this.height = height;
     }
 
-    //MODIFIES: this
-    //EFFECTS: set the stage(only used for testing
-    public void setStage(String stage) {
-        this.stage = stage;
-    }
-
-
     public abstract void changeStage();
 }

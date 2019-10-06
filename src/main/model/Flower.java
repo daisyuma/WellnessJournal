@@ -15,13 +15,13 @@ public class Flower extends Plant {
         }
         if (height >= HEIGHT_TO_CHANGE_STATE_1 && height < HEIGhT_TO_CHANGE_STATE_2) {
             this.stage = "sprout";
-            System.out.println("I'm sprouting!");
+            System.out.println("Flower: I'm sprouting!");
         } else if (height >= HEIGhT_TO_CHANGE_STATE_2 && height < HEIGHT_TO_CHANGE_STATE_FINAL) {
             stage = "bud";
-            System.out.println("I'm budding!");
+            System.out.println("Flower: I'm budding!");
         } else if (height >= HEIGHT_TO_CHANGE_STATE_FINAL) {
             stage = "flower";
-            System.out.println("I'm flowering!");
+            System.out.println("Flower: I'm flowering!");
         }
     }
 }
