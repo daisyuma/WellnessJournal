@@ -103,21 +103,6 @@ public class User implements Loadable, Saveable {
         loadEntry();
     }
 
-    public void growPlant() {
-        boolean complete = askComplete();
-        addPoint(complete);
-    }
-
-    public boolean askComplete() {
-        System.out.println("Did you complete your goal for today?"
-                + " if yes, please answer yes, if not, please answer no ");
-        String answer = scanner.nextLine();
-        if (answer == "yes") {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 //    public int askSaveEntry() {
 //        System.out.println("Would you like to save your result? "

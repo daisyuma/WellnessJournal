@@ -33,6 +33,17 @@ public class WellnessJournal {
         return myPlant;
     }
 
+    public boolean askComplete() {
+        System.out.println("Did you complete your goal for today?"
+                + " if yes, please answer yes, if not, please answer no ");
+        String answer = scanner.nextLine();
+        if (answer == "yes") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public static void main(String[] args) throws IOException {
         WellnessJournal myJournal = new WellnessJournal();
@@ -40,7 +51,8 @@ public class WellnessJournal {
         User myUser = new User();
         Plant myPlant = myJournal.askPlant();
         myUser.run();
-        myUser.growPlant();
+        boolean complete = myJournal.askComplete();
+        myUser.addPoint(complete);
         myPlant.grow(myUser.getPoints());
         myPlant.changeStage();
     }
