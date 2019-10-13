@@ -15,16 +15,17 @@ public abstract class Plant {
     }
 
     //MODIFIES: this
-    //EFFECT: if eligible, grow by GROWTH_REWARD and return true, if not return false;
-    public boolean grow(int points) {
+    //EFFECT: - !!!if eligible, grow by GROWTH_REWARD and subtract point and allow growth and return leftover points,
+    //        -if not return original points;
+    public int grow(int points) {
+        int leftOverPoint = points;
         if (points >= POINTS_FOR_GROWTH) {
             int ratio = points / POINTS_FOR_GROWTH;
             int heightIncrease = ratio * GROWTH_REWARD;
             height = height + heightIncrease;
-            return true;
-        } else {
-            return false;
+            leftOverPoint = points - (ratio * POINTS_FOR_GROWTH);
         }
+        return leftOverPoint;
     }
 
     //getters

@@ -16,17 +16,25 @@ public class TestTomato {
     }
 
     @Test
-    public void testGrowTrue() {
-        myTomato.grow(45);
-        assertEquals(4, myTomato.getHeight());
-        assertTrue(myTomato.grow(45));
+    public void testGrow() {
+        int leftOverPoint = myTomato.grow(84);
+        assertEquals(8, myTomato.getHeight());
+        assertEquals(4, leftOverPoint);
     }
 
     @Test
-    public void testGrowFalse() {
-        assertFalse(myTomato.grow(19));
+    public void testGrowOnBOundary() {
+        int leftOverPoint = myTomato.grow(20);
+        assertEquals(2, myTomato.getHeight());
+        assertEquals(0, leftOverPoint);
     }
 
+    @Test
+    public void testNoGrow() {
+        int leftOverPoint = myTomato.grow(19);
+        assertEquals(0, myTomato.getHeight());
+        assertEquals(19, leftOverPoint);
+    }
     @Test
     public void testNoChangeState() {
         myTomato.setHeight(5);

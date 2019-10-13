@@ -59,6 +59,12 @@ public class User implements Loadable, Saveable {
         this.name = name;
     }
 
+    //MODIFIES: this
+    //EFFECTS: set point
+    public void setPoint(int point) {
+        this.points = point;
+    }
+
 
     //REQUIRES: the goal should be one of : Exercise, Drink Water, Eat Healthy
     //EFFECTS: add HealthyGoal to entries
@@ -73,8 +79,7 @@ public class User implements Loadable, Saveable {
 
     //MODIFIES: this
     //EFFECTS: if user completed their goal of the day
-    //      - add POINTS_FOR_GOAL and then,
-    //        - !!!if eligible, subtract point and allow growth
+    //      - add POINTS_FOR_GOAL
     //else don't add point
     public void addPoint(boolean complete) {
         if (complete) {
@@ -82,40 +87,30 @@ public class User implements Loadable, Saveable {
         }
     }
 
-    public void run() throws IOException {
-        System.out.println("Please enter your name");
-        String name = scanner.nextLine();
-        setName(name);
-        System.out.println(
-                "Please enter your HealthyGoal. "
-                        + "Your goal should be one of: exercise, drink_water, or eat_healthy"
-        );
-        String goal = scanner.nextLine();
-        HealthyEntry myEntry = new HealthyEntry();
-        myEntry.setDate();
-        myEntry.setGoal(goal);
-        System.out.println("How do you feel about your goal?");
-        String journal = scanner.nextLine();
-        myEntry.setGoal(goal);
-        myEntry.setJournal(journal);
-        addEntry(myEntry);
-        saveEntry();
-        loadEntry();
+    public void savePoint() throws IOException {
+        List<String> points = Files.readAllLines(Paths.get("points.txt")); //there's only one line in this file
+        Integer point = this.points;
+        String pointString = Integer.toString(point);
+        points.clear();
+        points.add(pointString);
+        PrintWriter writer = new PrintWriter("points.txt", "UTF-8");
+        writer.println(pointString);
+        writer.close();
     }
 
+    public void loadPoint() throws IOException {
+        List<String> points = Files.readAllLines(Paths.get("points.txt"));//there's only one line in this file
+        String pointSoFar = points.get(0);
+        int point = Integer.valueOf(pointSoFar);
+        System.out.println("You have " + pointSoFar + " points so far");
+        this.points = point;
+    }
 
-//    public int askSaveEntry() {
-//        System.out.println("Would you like to save your result? "
-//                + "if yes please enter 1, if not please enter 2");
-//        int save = scanner.nextInt();
-//        return save;
-//    }
 
     public void saveEntry() throws IOException {
         List<String> lines = Files.readAllLines(Paths.get("outputfile.txt"));
         List<HealthyEntry> entries = getEntries();
         for (HealthyEntry entry : entries) {
-            LocalDate date = entry.getDate();
             String goal = entry.getGoal();
             String journal = entry.getJournal();
             lines.add(goal + " " + journal);

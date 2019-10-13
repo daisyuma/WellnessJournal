@@ -15,15 +15,18 @@ public class TestFlower {
     }
 
     @Test
-    public void testGrowTrue() {
-        myFlower.grow(40);
+    public void testGrow() {
+        int leftOverPoint = myFlower.grow(42);
         assertEquals(4, myFlower.getHeight());
-        assertTrue(myFlower.grow(40));
+        assertEquals(2, leftOverPoint);
     }
 
     @Test
-    public void testGrowFalse() {
-        assertFalse(myFlower.grow(5));
+    public void testNoGrow() {
+        int leftOverPoint = myFlower.grow(12);
+        assertEquals(0, myFlower.getHeight());
+        assertEquals(12, leftOverPoint);
+
     }
 
     @Test

@@ -68,7 +68,7 @@ public class UserTest {
         User user = myUser.loadEntry();
         List<HealthyEntry> dummyEntries = user.getEntries();
         HealthyEntry dummyEntry = dummyEntries.get(0);
-        assertEquals("exercise", dummyEntry.getGoal());
+        assertEquals("drink_water", dummyEntry.getGoal());
     }
 
     @Test
@@ -91,5 +91,15 @@ public class UserTest {
         dummyStringList.add("today");
         dummyStringList.add(" is a nice day");
         assertEquals(dummyStringList, testStringList);
+    }
+
+    @Test
+    public void testSavePointAndLoadPoint() throws IOException {
+        myUser.addPoint(true);
+        myUser.addPoint(true); //user now has 4 points
+        myUser.savePoint();
+        myUser.setPoint(0);  //set point back to zero and see if load point will successfully load 4 points back
+        myUser.loadPoint();
+        assertEquals(4, myUser.getPoints());
     }
 }
