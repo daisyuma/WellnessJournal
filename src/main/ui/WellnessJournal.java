@@ -1,6 +1,8 @@
 package ui;
 
 
+import exceptions.InvalidGoalException;
+import exceptions.InvalidInputException;
 import model.*;
 
 import java.io.IOException;
@@ -59,10 +61,14 @@ public class WellnessJournal {
         return complete;
     }
 
-    public void run(User myUser) throws IOException {
+    public void setUserName() {
         System.out.println("Please enter your name");
         String name = scanner.nextLine();
         myUser.setName(name);
+
+    }
+
+    public HealthyEntry setEntryOfTheDay() {
         System.out.println(
                 "Please enter your HealthyGoal. "
                         + "Your goal should be one of: exercise, drink_water, or eat_healthy"
@@ -70,11 +76,21 @@ public class WellnessJournal {
         String goal = scanner.nextLine();
         HealthyEntry myEntry = new HealthyEntry();
         myEntry.setDate();
-        myEntry.setGoal(goal);
         System.out.println("How do you feel about your goal?");
         String journal = scanner.nextLine();
-        myEntry.setGoal(goal);
+        try {
+            myEntry.setGoal(goal);
+        } catch (InvalidGoalException e) {
+            System.out.println("Your input is not one of exercise, drink_water, or eat_healthy");
+            e.printStackTrace();
+        }
         myEntry.setJournal(journal);
+        return myEntry;
+    }
+
+    public void run(User myUser) throws IOException {
+        setUserName();
+        HealthyEntry myEntry = setEntryOfTheDay();
         myUser.addEntry(myEntry);
         myUser.saveEntry();
         myUser.loadEntry();

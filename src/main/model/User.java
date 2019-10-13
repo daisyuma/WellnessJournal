@@ -3,6 +3,9 @@ package model;
 //reference the Transcript example from lecture
 //reference lab4 -- have like a reward system that goes towards your flower
 
+import exceptions.InvalidGoalException;
+import exceptions.InvalidInputException;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -128,7 +131,12 @@ public class User implements Loadable, Saveable {
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnFirstSpace(line);
             HealthyEntry entry = new HealthyEntry();
-            entry.setGoal(partsOfLine.get(0));
+            try {
+                entry.setGoal(partsOfLine.get(0));
+            } catch (InvalidGoalException e) {
+                System.out.println("an invalid goal is found in the file");
+                e.printStackTrace();
+            }
             String journal = (partsOfLine.get(1));
             entry.setJournal(journal);
             myUser.addEntry(entry);

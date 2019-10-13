@@ -1,9 +1,5 @@
 drink_water i feel good
 eat_healthy I ate an apple today
-exercise 
-eat_healthy 
-exercise 
-exercise 
 exercise my scanner is not working properly
 exercise my scanner keeps failing
 exercise i don't know
@@ -15,5 +11,8 @@ exercise i feel good
 drink_water today is rainy
 drink_water i feel like I drank too much sugary drink today
 exercise i feel like my point system is starting to work
-daisy exercise
 exercise i feel fine
+exercise i feel good
+drink_water today is rainy
+exercise i feel fine
+exercise i wish my exception mechanism works

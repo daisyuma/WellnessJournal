@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.InvalidGoalException;
+
 import java.time.LocalDate;
 
 
@@ -16,8 +18,16 @@ public class HealthyEntry {
 
     //REQUIRES: goal is one of: "exercise", "drink water", or "eat healthy"
     //EFFECTS: set the goal
-    public void setGoal(String goal) {
-        this.goal = goal;
+    public void setGoal(String goal) throws InvalidGoalException {
+        if (goal.equals("exercise")) {
+            this.goal = goal;
+        } else if (goal.equals("drink_water")) {
+            this.goal = goal;
+        } else if (goal.equals("eat_healthy")) {
+            this.goal = goal;
+        } else {
+            throw new InvalidGoalException();
+        }
     }
 
     public void setDate() {
