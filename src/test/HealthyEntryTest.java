@@ -1,3 +1,4 @@
+import exceptions.EmptyInputException;
 import exceptions.InvalidGoalException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class HealthyEntryTest {
     public void runBefore() {
         myEntry = new HealthyEntry();
         myEntry.setDate();
-        myEntry.setJournal("I went to the gym today, feeling good!");
+
     }
 
     @Test
@@ -25,8 +26,21 @@ public class HealthyEntryTest {
     }
 
     @Test
-    public void testGetEntry() {
-        assertEquals("I went to the gym today, feeling good!", myEntry.getJournal());
+    public void testSetEntryNoExceptionExpected() {
+        try {
+            myEntry.setJournal("I went to the gym today, feeling good!");
+        } catch (EmptyInputException e) {
+            fail("No Exception Expected here");
+        }
+    }
+
+    @Test
+    public void testSetEntryExceptionExpected() {
+        try {
+            myEntry.setJournal("");
+            fail("Expected an exception here");
+        } catch (EmptyInputException e) {
+        }
     }
 
     @Test

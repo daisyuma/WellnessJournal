@@ -131,14 +131,14 @@ public class User implements Loadable, Saveable {
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnFirstSpace(line);
             HealthyEntry entry = new HealthyEntry();
-            try {
-                entry.setGoal(partsOfLine.get(0));
-            } catch (InvalidGoalException e) {
-                System.out.println("an invalid goal is found in the file");
-                e.printStackTrace();
-            }
+            String goal = (partsOfLine.get(0));
             String journal = (partsOfLine.get(1));
-            entry.setJournal(journal);
+            try {
+                entry.setGoal(goal);
+                entry.setJournal(journal);
+            } catch (InvalidInputException e) {
+                System.out.println("an invalid input is found in the file");
+            }
             myUser.addEntry(entry);
             System.out.print("Goal: " + partsOfLine.get(0) + " | ");
             System.out.println("Journal:" + journal);

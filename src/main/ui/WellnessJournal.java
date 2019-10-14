@@ -1,6 +1,7 @@
 package ui;
 
 
+import exceptions.EmptyInputException;
 import exceptions.InvalidGoalException;
 import exceptions.InvalidInputException;
 import model.*;
@@ -19,13 +20,20 @@ public class WellnessJournal {
         myUser = new User();
         myUser.loadPoint();
         myPlant = askPlant();
+        myPlant.loadHeight();
         run(myUser);
-        boolean complete = askComplete();
+        boolean complete = false;
+        try {
+            complete = askComplete();
+        } catch (InvalidInputException e) {
+            System.out.println("Your answer should be one of y or n");
+        }
         myUser.addPoint(complete);
         int leftOverPoints = myPlant.grow(myUser.getPoints());
         myUser.setPoint(leftOverPoints);
         myUser.savePoint();
         myPlant.changeStage();
+        myPlant.saveHeight();
     }
 
 
@@ -48,7 +56,7 @@ public class WellnessJournal {
 
     //EFFECTS: returns true if user completed their goal of the day
     //      - else return false
-    public boolean askComplete() {
+    public boolean askComplete() throws InvalidInputException {
         System.out.println("Did you complete your goal for today?"
                 + " if yes, please answer y, if not, please answer n ");
         String answer = scanner.next();
@@ -57,6 +65,8 @@ public class WellnessJournal {
             complete = true;
         } else if (answer.equals("n")) {
             complete = false;
+        } else {
+            throw new InvalidInputException();
         }
         return complete;
     }
@@ -70,8 +80,7 @@ public class WellnessJournal {
 
     public HealthyEntry setEntryOfTheDay() {
         System.out.println(
-                "Please enter your HealthyGoal. "
-                        + "Your goal should be one of: exercise, drink_water, or eat_healthy"
+                "Please enter your HealthyGoal as one of: exercise, drink_water, or eat_healthy"
         );
         String goal = scanner.nextLine();
         HealthyEntry myEntry = new HealthyEntry();
@@ -80,11 +89,12 @@ public class WellnessJournal {
         String journal = scanner.nextLine();
         try {
             myEntry.setGoal(goal);
+            myEntry.setJournal(journal);
         } catch (InvalidGoalException e) {
             System.out.println("Your input is not one of exercise, drink_water, or eat_healthy");
-            e.printStackTrace();
+        } catch (EmptyInputException e) {
+            System.out.println("You cannot add an empty journal");
         }
-        myEntry.setJournal(journal);
         return myEntry;
     }
 

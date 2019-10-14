@@ -1,5 +1,11 @@
 package model;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
 public abstract class Plant {
     protected int height;
     protected String stage;
@@ -46,4 +52,23 @@ public abstract class Plant {
     }
 
     public abstract void changeStage();
+
+    public void saveHeight() throws IOException {
+        List<String> heights = Files.readAllLines(Paths.get("height.txt")); //there's only one line in this file
+        Integer updatedHeight = this.height;
+        String heightString = Integer.toString(updatedHeight);
+        heights.clear();
+        heights.add(heightString);
+        PrintWriter writer = new PrintWriter("height.txt", "UTF-8");
+        writer.println(heightString);
+        writer.close();
+    }
+
+    public void loadHeight() throws IOException {
+        List<String> heights = Files.readAllLines(Paths.get("height.txt"));//there's only one line in this file
+        String heightSoFarString = heights.get(0);
+        int height = Integer.valueOf(heightSoFarString);
+        System.out.println("Your plant is " + heightSoFarString + " cm so far");
+        this.height = height;
+    }
 }

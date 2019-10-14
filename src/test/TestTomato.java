@@ -4,6 +4,8 @@ import model.Tomato;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -61,5 +63,14 @@ public class TestTomato {
         myTomato.setHeight(100);
         myTomato.changeStage();
         assertEquals("ripe", myTomato.getStage());
+    }
+
+    @Test
+    public void testSaveHeightAndLoadHeight() throws IOException {
+        myTomato.setHeight(20);
+        myTomato.saveHeight();
+        myTomato.setHeight(0);  //set height back to zero and see if load height will successfully load height back
+        myTomato.loadHeight();
+        assertEquals(20, myTomato.getHeight());
     }
 }

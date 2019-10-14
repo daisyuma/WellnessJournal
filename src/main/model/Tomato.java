@@ -6,7 +6,6 @@ public class Tomato extends Plant {
         super();
     }
 
-    @Override
     //MODIFIES :this
     //EFFECTS: if height is enough, change stage to sprout -> fruit -> ripen
     public void changeStage() {

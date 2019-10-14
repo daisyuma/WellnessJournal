@@ -3,6 +3,8 @@ import model.Plant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -54,5 +56,14 @@ public class TestFlower {
         myFlower.setHeight(111);
         myFlower.changeStage();
         assertEquals("flower", myFlower.getStage());
+    }
+
+    @Test
+    public void testSaveHeightAndLoadHeight() throws IOException {
+        myFlower.setHeight(40);
+        myFlower.saveHeight();
+        myFlower.setHeight(0);  //set point back to zero and see if load point will successfully load 4 points back
+        myFlower.loadHeight();
+        assertEquals(40, myFlower.getHeight());
     }
 }

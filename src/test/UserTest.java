@@ -1,4 +1,5 @@
 
+import exceptions.EmptyInputException;
 import exceptions.InvalidGoalException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ public class UserTest {
     private HealthyEntry myEntry = new HealthyEntry();
 
     @BeforeEach
-    public void runBefore() throws InvalidGoalException {
+    public void runBefore() throws InvalidGoalException, EmptyInputException {
         myUser = new User();
         myUser.setName("Daisy");
         myEntry.setGoal("exercise");
@@ -54,7 +55,7 @@ public class UserTest {
 
 
     @Test
-    public void testSaveEntry() throws IOException, InvalidGoalException {
+    public void testSaveEntry() throws IOException, InvalidGoalException, EmptyInputException {
         HealthyEntry otherEntry = new HealthyEntry();
         otherEntry.setGoal("drink_water");
         otherEntry.setJournal("today is rainy");
