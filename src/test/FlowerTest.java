@@ -8,7 +8,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class TestFlower {
+public class FlowerTest {
     private Plant myFlower;
 
     @BeforeEach

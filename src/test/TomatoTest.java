@@ -9,7 +9,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class TestTomato {
+public class TomatoTest {
     private Plant myTomato;
 
     @BeforeEach
