@@ -91,18 +91,18 @@ public class User implements Loadable, Saveable {
     }
 
     public void savePoint() throws IOException {
-        List<String> points = Files.readAllLines(Paths.get("points.txt")); //there's only one line in this file
+        List<String> points = Files.readAllLines(Paths.get("./data/points.txt")); //there's only one line in this file
         Integer point = this.points;
         String pointString = Integer.toString(point);
         points.clear();
         points.add(pointString);
-        PrintWriter writer = new PrintWriter("points.txt", "UTF-8");
+        PrintWriter writer = new PrintWriter("./data/points.txt", "UTF-8");
         writer.println(pointString);
         writer.close();
     }
 
     public void loadPoint() throws IOException {
-        List<String> points = Files.readAllLines(Paths.get("points.txt"));//there's only one line in this file
+        List<String> points = Files.readAllLines(Paths.get("./data/points.txt"));//there's only one line in this file
         String pointSoFar = points.get(0);
         int point = Integer.valueOf(pointSoFar);
         System.out.println("You have " + pointSoFar + " points so far");
@@ -111,13 +111,13 @@ public class User implements Loadable, Saveable {
 
 
     public void saveEntry() throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get("outputfile.txt"));
+        List<String> lines = Files.readAllLines(Paths.get("./data/outputfile.txt"));
         List<HealthyEntry> entries = getEntries();
         for (HealthyEntry entry : entries) {
             String goal = entry.getGoal();
             String journal = entry.getJournal();
             lines.add(goal + " " + journal);
-            PrintWriter writer = new PrintWriter("outputfile.txt", "UTF-8");
+            PrintWriter writer = new PrintWriter("./data/outputfile.txt", "UTF-8");
             for (String line : lines) {
                 writer.println(line);
             }
@@ -126,7 +126,7 @@ public class User implements Loadable, Saveable {
     }
 
     public User loadEntry() throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get("outputfile.txt"));
+        List<String> lines = Files.readAllLines(Paths.get("./data/outputfile.txt"));
         User myUser = new User();
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnFirstSpace(line);

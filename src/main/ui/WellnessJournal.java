@@ -6,6 +6,7 @@ import exceptions.InvalidGoalException;
 import exceptions.InvalidInputException;
 import model.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
