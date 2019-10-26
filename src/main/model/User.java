@@ -3,32 +3,32 @@ package model;
 //reference the Transcript example from lecture
 //reference lab4 -- have like a reward system that goes towards your flower
 
-import exceptions.InvalidGoalException;
+import exceptions.EmptyInputException;
 import exceptions.InvalidInputException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 
 public class User implements Loadable, Saveable {
-    private static Scanner scanner = new Scanner(System.in);
     private String name;
-    private List<HealthyEntry> entries;//how to make Goal some kind of enumeration //change goal to a class later
+    private ArrayList<HealthyEntry> entries;
+    private HashMap<String, ArrayList<HealthyEntry>> entriesMap;
     private int points;
+    private Plant plant = null;
     public static int POINTS_FOR_GOAL = 2;
 
 
     //constructor
     public User() {
         this.entries = new ArrayList<>();
+        this.entriesMap = new HashMap<>();
         this.points = 0;
-
     }
 
     //getters
@@ -39,18 +39,23 @@ public class User implements Loadable, Saveable {
         return this.name;
     }
 
-    //EFFECTS: given an index, return the entry of that index in the entries list
-    public HealthyEntry getEntry(int i) {
-        return this.entries.get(i);
-    }
-
-    public List<HealthyEntry> getEntries() {
+    public ArrayList<HealthyEntry> getEntries() {
         return this.entries;
     }
 
     //EFFECTS: return the number of points user have
     public int getPoints() {
         return this.points;
+    }
+
+    //EFFECTS: return this user's plant
+    public Plant getPlant() {
+        return this.plant;
+    }
+
+    //EFFECTS: return entry at the given index
+    public HealthyEntry getEntry(int i) {
+        return entries.get(i);
     }
 
 
@@ -63,16 +68,46 @@ public class User implements Loadable, Saveable {
     }
 
     //MODIFIES: this
+    //EFFECTS: assign a plant to this and assign this to that plant
+    public void setPlant(Plant plant) {
+        if (this.plant == null) {
+            this.plant = plant;
+            plant.setUser(this);
+        }
+    }
+
+    //MODIFIES: this
     //EFFECTS: set point
     public void setPoint(int point) {
         this.points = point;
     }
 
 
-    //REQUIRES: the goal should be one of : Exercise, Drink Water, Eat Healthy
-    //EFFECTS: add HealthyGoal to entries
-    public void addEntry(HealthyEntry newEntry) {
-        this.entries.add(newEntry);
+    public void addEntry(HealthyEntry entry) {
+        entries.add(entry);
+    }
+
+
+    //MODIFIES; this
+    //EFFECTS: add HealthyEntry to corresponding goal, if goal does not exist, create new key of that goal
+    //         and add entry to that goal
+    public void setEntriesMap() {
+        for (HealthyEntry entry : entries) {
+            String goal = entry.getGoal();
+            if (entriesMap.containsKey(goal)) {
+                ArrayList<HealthyEntry> entries = entriesMap.get(goal);
+                entries.add(entry);
+            } else {
+                entriesMap.put(goal, new ArrayList<>());
+                ArrayList<HealthyEntry> entries = entriesMap.get(goal);
+                entries.add(entry);
+            }
+        }
+    }
+
+    //EFFECTS: Returns the user's entriesMap
+    public HashMap<String, ArrayList<HealthyEntry>> getEntriesMap() {
+        return entriesMap;
     }
 
     // EFFECTS: Returns the number of goals in the list
@@ -137,11 +172,9 @@ public class User implements Loadable, Saveable {
                 entry.setGoal(goal);
                 entry.setJournal(journal);
             } catch (InvalidInputException e) {
-                System.out.println("an invalid input is found in the file");
+                System.out.println("An InvalidInputException is found in the file");
             }
             myUser.addEntry(entry);
-            System.out.print("Goal: " + partsOfLine.get(0) + " | ");
-            System.out.println("Journal:" + journal);
         }
         return myUser;
     }

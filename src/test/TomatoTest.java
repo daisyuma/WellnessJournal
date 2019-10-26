@@ -1,6 +1,7 @@
 import model.Flower;
 import model.Plant;
 import model.Tomato;
+import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,31 +12,37 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TomatoTest {
     private Plant myTomato;
+    private User myUser;
 
     @BeforeEach
     public void runBefore() {
         myTomato = new Tomato();
+        myUser = new User();
+        myTomato.setUser(myUser);
     }
 
     @Test
     public void testGrow() {
-        int leftOverPoint = myTomato.grow(84);
+        myUser.setPoint(84);
+        myTomato.grow();
         assertEquals(8, myTomato.getHeight());
-        assertEquals(4, leftOverPoint);
+        assertEquals(4, myUser.getPoints());
     }
 
     @Test
-    public void testGrowOnBOundary() {
-        int leftOverPoint = myTomato.grow(20);
+    public void testGrowOnBoundary() {
+        myUser.setPoint(20);
+        myTomato.grow();
         assertEquals(2, myTomato.getHeight());
-        assertEquals(0, leftOverPoint);
+        assertEquals(0, myUser.getPoints());
     }
 
     @Test
     public void testNoGrow() {
-        int leftOverPoint = myTomato.grow(19);
+        myUser.setPoint(19);
+        myTomato.grow();
         assertEquals(0, myTomato.getHeight());
-        assertEquals(19, leftOverPoint);
+        assertEquals(19, myUser.getPoints());
     }
     @Test
     public void testNoChangeState() {

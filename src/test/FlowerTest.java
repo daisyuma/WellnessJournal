@@ -2,6 +2,7 @@ import model.Flower;
 import model.Plant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import model.User;
 
 import java.io.IOException;
 
@@ -10,24 +11,29 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FlowerTest {
     private Plant myFlower;
+    private User myUser;
 
     @BeforeEach
     public void runBefore() {
         myFlower = new Flower();
+        myUser = new User();
+        myFlower.setUser(myUser);
     }
 
     @Test
     public void testGrow() {
-        int leftOverPoint = myFlower.grow(42);
+        myUser.setPoint(42);
+        myFlower.grow();
         assertEquals(4, myFlower.getHeight());
-        assertEquals(2, leftOverPoint);
+        assertEquals(2, myUser.getPoints());
     }
 
     @Test
     public void testNoGrow() {
-        int leftOverPoint = myFlower.grow(12);
+        myUser.setPoint(12);
+        myFlower.grow();
         assertEquals(0, myFlower.getHeight());
-        assertEquals(12, leftOverPoint);
+        assertEquals(12, myUser.getPoints());
 
     }
 

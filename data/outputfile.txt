@@ -2,15 +2,7 @@ drink_water i feel good
 eat_healthy I ate an apple today
 exercise my scanner is not working properly
 exercise my scanner keeps failing
-exercise i don't know
-exercise i feel good
-drink_water today is rainy
-exercise i feel good
-eat_healthy I want the save height method to work
-exercise i want my plant to grow
-exercise i want my plant to grow
-exercise i feel good
-drink_water today is rainy
+socialize I met up with friends today
 exercise i feel good
 drink_water today is rainy
 exercise i feel good

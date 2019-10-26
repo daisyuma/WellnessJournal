@@ -2,12 +2,11 @@ package ui;
 
 
 import exceptions.EmptyInputException;
-import exceptions.InvalidGoalException;
 import exceptions.InvalidInputException;
 import model.*;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -22,7 +21,8 @@ public class WellnessJournal {
         myUser.loadPoint();
         myPlant = askPlant();
         myPlant.loadHeight();
-        run(myUser);
+        myUser.setPlant(myPlant);
+        setUpUser(myUser);
         boolean complete = false;
         try {
             complete = askComplete();
@@ -30,8 +30,7 @@ public class WellnessJournal {
             System.out.println("Your answer should be one of y or n");
         }
         myUser.addPoint(complete);
-        int leftOverPoints = myPlant.grow(myUser.getPoints());
-        myUser.setPoint(leftOverPoints);
+        myPlant.grow();
         myUser.savePoint();
         myPlant.changeStage();
         myPlant.saveHeight();
@@ -81,36 +80,63 @@ public class WellnessJournal {
 
     public HealthyEntry setEntryOfTheDay() {
         System.out.println(
-                "Please enter your HealthyGoal as one of: exercise, drink_water, or eat_healthy"
+                "Please describe your HealthyGoal in one word"
         );
         String goal = scanner.nextLine();
         HealthyEntry myEntry = new HealthyEntry();
-        myEntry.setDate();
         System.out.println("How do you feel about your goal?");
         String journal = scanner.nextLine();
         try {
             myEntry.setGoal(goal);
             myEntry.setJournal(journal);
-        } catch (InvalidGoalException e) {
-            System.out.println("Your input is not one of exercise, drink_water, or eat_healthy");
         } catch (EmptyInputException e) {
             System.out.println("You cannot add an empty journal");
         }
         return myEntry;
     }
 
-    public void run(User myUser) throws IOException {
+    public void askLoadByGoal() throws InvalidInputException {
+        System.out.println("Do you want to load all the entries?"
+                + "if yes, please enter y, or else please specify a goal you would like to load from");
+        String answer = scanner.next();
+        if (answer.equals("y")) {
+            for (HealthyEntry entry : myUser.getEntries()) {
+                System.out.print("Goal: " + entry.getGoal() + " | ");
+                System.out.println("Journal:" + entry.getJournal());
+            }
+        } else {
+            loadSpecificGoal(answer);
+        }
+    }
+
+    public void loadSpecificGoal(String goal) throws InvalidInputException {
+        myUser.setEntriesMap();
+        if (!myUser.getEntriesMap().containsKey(goal)) {
+            throw new InvalidInputException();
+        } else {
+            ArrayList<HealthyEntry> entries = myUser.getEntriesMap().get(goal);
+            for (HealthyEntry entry : entries) {
+                System.out.println(entry.getJournal());
+            }
+        }
+    }
+
+    public void setUpUser(User myUser) throws IOException {
         setUserName();
         HealthyEntry myEntry = setEntryOfTheDay();
         myUser.addEntry(myEntry);
         myUser.saveEntry();
-        myUser.loadEntry();
+        this.myUser = myUser.loadEntry();
+        try {
+            askLoadByGoal();
+        } catch (InvalidInputException e) {
+            System.out.println("There are no entries for this goal");
+        }
     }
 
 
     public static void main(String[] args) throws IOException {
         new WellnessJournal();
-        // try doing the keep going thing
     }
 }
 

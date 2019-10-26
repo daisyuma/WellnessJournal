@@ -9,6 +9,7 @@ import java.util.List;
 public abstract class Plant {
     protected int height;
     protected String stage;
+    protected User user = null;
     protected static int GROWTH_REWARD = 2; //centimeter
     protected static int POINTS_FOR_GROWTH = 20;
     protected static int HEIGHT_TO_CHANGE_STATE_1 = 40;
@@ -21,17 +22,18 @@ public abstract class Plant {
     }
 
     //MODIFIES: this
-    //EFFECT: - !!!if eligible, grow by GROWTH_REWARD and subtract point and allow growth and return leftover points,
-    //        -if not return original points;
-    public int grow(int points) {
-        int leftOverPoint = points;
-        if (points >= POINTS_FOR_GROWTH) {
-            int ratio = points / POINTS_FOR_GROWTH;
+    //EFFECT: - !!!if eligible, grow by GROWTH_REWARD and subtract point and allow growth
+    //              and set user's points as leftover points,
+    //              if not user will have the same points as before, no growth
+    public void grow() {
+        int leftOverPoint = user.getPoints();
+        if (leftOverPoint >= POINTS_FOR_GROWTH) {
+            int ratio = leftOverPoint / POINTS_FOR_GROWTH;
             int heightIncrease = ratio * GROWTH_REWARD;
             height = height + heightIncrease;
-            leftOverPoint = points - (ratio * POINTS_FOR_GROWTH);
+            leftOverPoint = leftOverPoint - (ratio * POINTS_FOR_GROWTH);
         }
-        return leftOverPoint;
+        user.setPoint(leftOverPoint);
     }
 
     //getters
@@ -44,11 +46,22 @@ public abstract class Plant {
         return height;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     //setters
     //MODIFIES: this
     //EFFECTS: set the height(only used for testing
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void setUser(User user) {
+        if (this.user == null) {
+            this.user = user;
+            user.setPlant(this);
+        }
     }
 
     public abstract void changeStage();

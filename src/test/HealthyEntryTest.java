@@ -1,9 +1,6 @@
 import exceptions.EmptyInputException;
-import exceptions.InvalidGoalException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,13 +13,7 @@ public class HealthyEntryTest {
     @BeforeEach
     public void runBefore() {
         myEntry = new HealthyEntry();
-        myEntry.setDate();
 
-    }
-
-    @Test
-    public void testGetDate() {
-        assertEquals(LocalDate.now(), myEntry.getDate());
     }
 
     @Test
@@ -40,6 +31,7 @@ public class HealthyEntryTest {
             myEntry.setJournal("");
             fail("Expected an exception here");
         } catch (EmptyInputException e) {
+            System.out.println("exception expected here");
         }
     }
 
@@ -47,7 +39,7 @@ public class HealthyEntryTest {
     public void testSetGoalNoExceptionExpected() {
         try {
             myEntry.setGoal("exercise");
-        } catch (InvalidGoalException e) {
+        } catch (EmptyInputException e) {
             fail("No exception should be thrown in this case");
         }
     }
@@ -55,9 +47,9 @@ public class HealthyEntryTest {
     @Test
     public void testSetGoalExceptionExpected() {
         try {
-            myEntry.setGoal("play");
+            myEntry.setGoal("");
             fail("an exception should have been thrown");
-        } catch (InvalidGoalException e) {
+        } catch (EmptyInputException e) {
         }
     }
 }

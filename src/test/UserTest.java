@@ -1,9 +1,10 @@
 
 import exceptions.EmptyInputException;
-import exceptions.InvalidGoalException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import model.User;
+import model.Plant;
+import model.Flower;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,6 +12,7 @@ import model.HealthyEntry;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UserTest {
@@ -19,13 +21,21 @@ public class UserTest {
     private HealthyEntry myEntry = new HealthyEntry();
 
     @BeforeEach
-    public void runBefore() throws InvalidGoalException, EmptyInputException {
+    public void runBefore() throws EmptyInputException {
         myUser = new User();
         myUser.setName("Daisy");
         myEntry.setGoal("exercise");
         myEntry.setJournal("i feel good");
         myUser.addEntry(myEntry);
 
+    }
+
+    @Test   //test that User has a plant and plant has that user
+    public void testSetPlant() {
+        Plant myPlant = new Flower();
+        myUser.setPlant(myPlant);
+        assertEquals(myPlant, myUser.getPlant());
+        assertEquals(myUser, myPlant.getUser());
     }
 
 
@@ -55,7 +65,7 @@ public class UserTest {
 
 
     @Test
-    public void testSaveEntry() throws IOException, InvalidGoalException, EmptyInputException {
+    public void testSaveEntry() throws IOException, EmptyInputException {
         HealthyEntry otherEntry = new HealthyEntry();
         otherEntry.setGoal("drink_water");
         otherEntry.setJournal("today is rainy");
@@ -103,5 +113,27 @@ public class UserTest {
         myUser.setPoint(0);  //set point back to zero and see if load point will successfully load 4 points back
         myUser.loadPoint();
         assertEquals(4, myUser.getPoints());
+    }
+
+    @Test
+    public void testSetEntriesMapWithNewGoal() throws EmptyInputException {
+        HealthyEntry dummyEntry = new HealthyEntry();
+        dummyEntry.setGoal("socialize");
+        dummyEntry.setJournal("I made a new friend");
+        myUser.addEntry(dummyEntry);
+        myUser.setEntriesMap();
+        HashMap<String, ArrayList<HealthyEntry>> map = myUser.getEntriesMap();
+        assertEquals(dummyEntry,map.get("socialize").get(0));
+    }
+
+    @Test
+    public void testSetEntriesMapWithAlreadyExistingGoal() throws EmptyInputException {
+        HealthyEntry dummyEntry = new HealthyEntry();
+        dummyEntry.setGoal("exercise");
+        dummyEntry.setJournal("i exercised for 30min today");
+        myUser.addEntry(dummyEntry);
+        myUser.setEntriesMap();
+        HashMap<String, ArrayList<HealthyEntry>> map = myUser.getEntriesMap();
+        assertEquals(dummyEntry,map.get("exercise").get(1));
     }
 }
