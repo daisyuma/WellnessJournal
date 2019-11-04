@@ -3,32 +3,23 @@ package model;
 //reference the Transcript example from lecture
 //reference lab4 -- have like a reward system that goes towards your flower
 
-import exceptions.EmptyInputException;
-import exceptions.InvalidInputException;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 
 public class User implements Loadable, Saveable {
     private String name;
-    private ArrayList<HealthyEntry> entries;
-    private HashMap<String, ArrayList<HealthyEntry>> entriesMap;
-    private int points;
+    private EntryManager entryManager;
+    private PointKeeper pointKeeper;
     private Plant plant = null;
-    public static int POINTS_FOR_GOAL = 2;
 
 
     //constructor
     public User() {
-        this.entries = new ArrayList<>();
-        this.entriesMap = new HashMap<>();
-        this.points = 0;
+        entryManager = new EntryManager();
+        pointKeeper = new PointKeeper();
     }
 
     //getters
@@ -40,12 +31,12 @@ public class User implements Loadable, Saveable {
     }
 
     public ArrayList<HealthyEntry> getEntries() {
-        return this.entries;
+        return entryManager.getEntries();
     }
 
     //EFFECTS: return the number of points user have
     public int getPoints() {
-        return this.points;
+        return pointKeeper.getPoints();
     }
 
     //EFFECTS: return this user's plant
@@ -55,7 +46,7 @@ public class User implements Loadable, Saveable {
 
     //EFFECTS: return entry at the given index
     public HealthyEntry getEntry(int i) {
-        return entries.get(i);
+        return entryManager.getEntry(i);
     }
 
 
@@ -79,12 +70,12 @@ public class User implements Loadable, Saveable {
     //MODIFIES: this
     //EFFECTS: set point
     public void setPoint(int point) {
-        this.points = point;
+        pointKeeper.setPoint(point);
     }
 
 
     public void addEntry(HealthyEntry entry) {
-        entries.add(entry);
+        entryManager.addEntry(entry);
     }
 
 
@@ -92,27 +83,17 @@ public class User implements Loadable, Saveable {
     //EFFECTS: add HealthyEntry to corresponding goal, if goal does not exist, create new key of that goal
     //         and add entry to that goal
     public void setEntriesMap() {
-        for (HealthyEntry entry : entries) {
-            String goal = entry.getGoal();
-            if (entriesMap.containsKey(goal)) {
-                ArrayList<HealthyEntry> entries = entriesMap.get(goal);
-                entries.add(entry);
-            } else {
-                entriesMap.put(goal, new ArrayList<>());
-                ArrayList<HealthyEntry> entries = entriesMap.get(goal);
-                entries.add(entry);
-            }
-        }
+        entryManager.setEntriesMap();
     }
 
     //EFFECTS: Returns the user's entriesMap
     public HashMap<String, ArrayList<HealthyEntry>> getEntriesMap() {
-        return entriesMap;
+        return entryManager.getEntriesMap();
     }
 
     // EFFECTS: Returns the number of goals in the list
     public int entrySize() {
-        return entries.size();
+        return entryManager.entrySize();
     }
 
     //MODIFIES: this
@@ -120,63 +101,24 @@ public class User implements Loadable, Saveable {
     //      - add POINTS_FOR_GOAL
     //else don't add point
     public void addPoint(boolean complete) {
-        if (complete) {
-            this.points = points + POINTS_FOR_GOAL;
-        }
+        pointKeeper.addPoint(complete);
     }
 
     public void savePoint() throws IOException {
-        List<String> points = Files.readAllLines(Paths.get("./data/points.txt")); //there's only one line in this file
-        Integer point = this.points;
-        String pointString = Integer.toString(point);
-        points.clear();
-        points.add(pointString);
-        PrintWriter writer = new PrintWriter("./data/points.txt", "UTF-8");
-        writer.println(pointString);
-        writer.close();
+        pointKeeper.savePoint();
     }
 
     public void loadPoint() throws IOException {
-        List<String> points = Files.readAllLines(Paths.get("./data/points.txt"));//there's only one line in this file
-        String pointSoFar = points.get(0);
-        int point = Integer.valueOf(pointSoFar);
-        System.out.println("You have " + pointSoFar + " points so far");
-        this.points = point;
+        pointKeeper.loadPoint();
     }
 
 
     public void saveEntry() throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get("./data/outputfile.txt"));
-        List<HealthyEntry> entries = getEntries();
-        for (HealthyEntry entry : entries) {
-            String goal = entry.getGoal();
-            String journal = entry.getJournal();
-            lines.add(goal + " " + journal);
-            PrintWriter writer = new PrintWriter("./data/outputfile.txt", "UTF-8");
-            for (String line : lines) {
-                writer.println(line);
-            }
-            writer.close(); //note -- if you miss this, the file will not be written at all.
-        }
+        entryManager.saveEntry();
     }
 
     public User loadEntry() throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get("./data/outputfile.txt"));
-        User myUser = new User();
-        for (String line : lines) {
-            ArrayList<String> partsOfLine = splitOnFirstSpace(line);
-            HealthyEntry entry = new HealthyEntry();
-            String goal = (partsOfLine.get(0));
-            String journal = (partsOfLine.get(1));
-            try {
-                entry.setGoal(goal);
-                entry.setJournal(journal);
-            } catch (InvalidInputException e) {
-                System.out.println("An InvalidInputException is found in the file");
-            }
-            myUser.addEntry(entry);
-        }
-        return myUser;
+        return entryManager.loadEntry();
     }
 
     public static ArrayList<String> splitOnFirstSpace(String line) {

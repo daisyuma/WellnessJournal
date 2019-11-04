@@ -18,10 +18,8 @@ public class WellnessJournal {
     public WellnessJournal() throws IOException {
         welcome();
         myUser = new User();
-        myUser.loadPoint();
         myPlant = askPlant();
         myPlant.loadHeight();
-        myUser.setPlant(myPlant);
         setUpUser(myUser);
         boolean complete = false;
         try {
@@ -29,12 +27,15 @@ public class WellnessJournal {
         } catch (InvalidInputException e) {
             System.out.println("Your answer should be one of y or n");
         }
+        myUser.setPlant(myPlant);
+        myUser.loadPoint();
         myUser.addPoint(complete);
         myPlant.grow();
         myUser.savePoint();
         myPlant.changeStage();
         myPlant.saveHeight();
     }
+
 
 
     public void welcome() {

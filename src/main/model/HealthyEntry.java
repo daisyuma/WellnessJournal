@@ -2,6 +2,8 @@ package model;
 
 import exceptions.EmptyInputException;
 
+import java.time.LocalDate;
+
 
 public class HealthyEntry {
     private String goal;

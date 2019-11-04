@@ -2,12 +2,9 @@ drink_water i feel good
 eat_healthy I ate an apple today
 exercise my scanner is not working properly
 exercise my scanner keeps failing
-socialize I met up with friends today
 exercise i feel good
 drink_water today is rainy
 exercise i feel good
 drink_water today is rainy
-exercise i feel good
-drink_water today is rainy
-exercise i feel good
-drink_water today is rainy
+wake_up_early  want my refactoring to work
+drink_water i lost my water bottle
