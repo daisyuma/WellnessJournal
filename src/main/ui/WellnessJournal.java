@@ -102,8 +102,7 @@ public class WellnessJournal {
         String answer = scanner.next();
         if (answer.equals("y")) {
             for (HealthyEntry entry : myUser.getEntries()) {
-                System.out.print("Goal: " + entry.getGoal() + " | ");
-                System.out.println("Journal:" + entry.getJournal());
+                printEntry(entry.getGoal(), entry.getJournal());
             }
         } else {
             loadSpecificGoal(answer);
@@ -117,7 +116,7 @@ public class WellnessJournal {
         } else {
             ArrayList<HealthyEntry> entries = myUser.getEntriesMap().get(goal);
             for (HealthyEntry entry : entries) {
-                System.out.println(entry.getJournal());
+                printEntry(goal, entry.getJournal());
             }
         }
     }
@@ -133,6 +132,11 @@ public class WellnessJournal {
         } catch (InvalidInputException e) {
             System.out.println("There are no entries for this goal");
         }
+    }
+
+    public void printEntry(String goal, String journal) {
+        System.out.print("Goal: " + goal + " | ");
+        System.out.println("Journal:" + journal);
     }
 
 

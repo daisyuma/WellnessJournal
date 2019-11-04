@@ -1,10 +1,5 @@
 package model;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 
 public class Flower extends Plant {
 
@@ -29,8 +24,4 @@ public class Flower extends Plant {
             System.out.println("Flower: I'm flowering!");
         }
     }
-
-
-
-
 }
