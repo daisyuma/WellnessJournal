@@ -10,6 +10,7 @@ public class ReadFromWeb {
     public static BufferedReader br = null;
 
 
+
     public static void main(String[] args) throws IOException {
 
         try {
