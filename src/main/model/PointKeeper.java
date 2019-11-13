@@ -1,17 +1,20 @@
 package model;
 
+import observer.PointMonitor;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class PointKeeper {
+public class PointKeeper extends Subject {
     private int points;
     public static int POINTS_FOR_GOAL = 2;
 
     public PointKeeper() {
         points = 0;
+        addObserver(new PointMonitor()); ;
     }
 
     //EFFECTS: return the number of points user have
@@ -31,14 +34,16 @@ public class PointKeeper {
     //else don't add point
     public void addPoint(boolean complete) {
         if (complete) {
+            int before = this.points;
             this.points = points + POINTS_FOR_GOAL;
+            int after = this.points;
+            notify(before,after);
         }
     }
 
     public void savePoint() throws IOException {
         List<String> points = Files.readAllLines(Paths.get("./data/points.txt")); //there's only one line in this file
         Integer point = this.points;
-        System.out.println("you have " + point + " points now!");
         String pointString = Integer.toString(point);
         points.clear();
         points.add(pointString);
@@ -51,7 +56,6 @@ public class PointKeeper {
         List<String> points = Files.readAllLines(Paths.get("./data/points.txt"));//there's only one line in this file
         String pointSoFar = points.get(0);
         int point = Integer.valueOf(pointSoFar);
-        System.out.println("You have " + pointSoFar + " points before");
         this.points = point;
     }
 }

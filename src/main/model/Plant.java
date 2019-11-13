@@ -1,12 +1,14 @@
 package model;
 
+import observer.HeightMonitor;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public abstract class Plant {
+public abstract class Plant extends Subject {
     protected int height;
     protected String stage;
     protected User user = null;
@@ -19,6 +21,7 @@ public abstract class Plant {
     public Plant() {
         height = 0;
         stage = "seed";
+        addObserver(new HeightMonitor());
     }
 
     //MODIFIES: this
@@ -30,11 +33,16 @@ public abstract class Plant {
         if (leftOverPoint >= POINTS_FOR_GROWTH) {
             int ratio = leftOverPoint / POINTS_FOR_GROWTH;
             int heightIncrease = ratio * GROWTH_REWARD;
+            int before = this.height;
             height = height + heightIncrease;
+            int after = this.height;
+            notify(before, after);
             leftOverPoint = leftOverPoint - (ratio * POINTS_FOR_GROWTH);
         }
         user.setPoint(leftOverPoint);
     }
+
+
 
     //getters
     //EFFECTS: get the stage of the plant
