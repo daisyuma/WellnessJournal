@@ -19,8 +19,10 @@ public class TextPanel extends JPanel {
 
 
     //EFFECTS: asks for name
-    public void askForName() {
-        text.setText("Please enter your name");
+    public void askForPlant() {
+        text.setText("Welcome Back! "
+                + "What kind of plant would you like to grow today? "
+                + "Please select by clicking the buttons! ");
     }
 
     public void displayText(String text) {
