@@ -4,6 +4,8 @@ package ui;
 import exceptions.EmptyInputException;
 import exceptions.InvalidInputException;
 import model.*;
+import network.WebReader;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +17,9 @@ public class WellnessJournal {
     private User myUser;
     private Plant myPlant;
 
-    public WellnessJournal() throws IOException {
+
+    public WellnessJournal() throws IOException, ParseException {
+
         welcome();
         myUser = new User();
         myPlant = askPlant();
@@ -35,7 +39,6 @@ public class WellnessJournal {
         myPlant.changeStage();
         myPlant.saveHeight();
     }
-
 
 
     public void welcome() {
@@ -140,7 +143,7 @@ public class WellnessJournal {
     }
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParseException {
         new WellnessJournal();
     }
 }
