@@ -11,7 +11,7 @@ public class TextPanel extends JPanel {
     private TextArea text = new TextArea();
     private WebReader webReader = new WebReader();
 
-    public TextPanel() throws IOException, ParseException {
+    TextPanel() throws IOException, ParseException {
         text.setText(webReader.weatherForecast());
         setLayout(new BorderLayout());
         add(text, BorderLayout.CENTER);  // add(Component, LayoutManager.STATICPOSITION)
@@ -19,13 +19,13 @@ public class TextPanel extends JPanel {
 
 
     //EFFECTS: asks for name
-    public void askForPlant() {
+    void askForPlant() {
         text.setText("Welcome Back! "
                 + "What kind of plant would you like to grow today? "
                 + "Please select by clicking the buttons! ");
     }
 
-    public void displayText(String text) {
+    void displayText(String text) {
         this.text.setText(text);
     }
 }

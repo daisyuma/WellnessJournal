@@ -1,7 +1,6 @@
 package ui;
 
 import exceptions.EmptyInputException;
-import exceptions.InvalidInputException;
 import model.HealthyEntry;
 import model.Plant;
 import model.User;
@@ -25,17 +24,24 @@ public class MainFrame extends JFrame implements ActionListener {   //controller
 
     public MainFrame() throws IOException, ParseException {
         super("WellnessJournal");  //setting the title of the JFrame to name of app
-        setup();
+        guiSetup();
         getStarted();
         setPlant();
-        myPlant.loadHeight();
+        myPlant.loadHeight();   //TODO: put this in setPlant, only load when plant is selected
         myUser = new User();
         setUpUser(myUser);
         myUser.setPlant(myPlant);
+        myUser.loadPoint(); //TODO: load point into textArea too
+        boolean complete = askComplete();
+        myUser.addPoint(complete);
+        myPlant.grow();
+        myUser.savePoint();
+        myPlant.changeStage();
+        myPlant.saveHeight();  ///bring all the souts to the UI
     }
 
     //EFFECTS: setup the Frame of the GUI
-    public void setup() {
+    public void guiSetup() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //exit by pressing close button
         setSize(WIDTH, HEIGHT);
         setVisible(true);
@@ -64,27 +70,18 @@ public class MainFrame extends JFrame implements ActionListener {   //controller
         });
     }
 
-    public void run() {
-        boolean complete = false;
-        try {
-            complete = askComplete();
-        } catch (InvalidInputException e) {
-            System.out.println("Your answer should be one of y or n");
-        }
-        myUser.setPlant(myPlant);
-        myUser.loadPoint();  //load into TextArea as well
-        myUser.addPoint(complete);
-        myPlant.grow();
-        myUser.savePoint();
-        myPlant.changeStage();
-        myPlant.saveHeight();  ///bring all the souts to the UI
+    //TODO : change the Entry Panel to ask if User has completed their goal or not
+    // entry textfield changes to buttons with yes or no, or drop down menu
+    //EFFECT: ask if User has completed their goal, and return true if yes
+    public boolean askComplete() {
+        return false; //stub
     }
 
 
     public HealthyEntry setEntryOfTheDay() {
         HealthyEntry myEntry = new HealthyEntry();
-        entryPanel.setFormListener(new FormListener() {
-            public void formSubmitted(FormEvent e) {
+        entryPanel.setEntryListener(new EntryListener() {
+            public void formSubmitted(EntryEvent e) {
                 String goal = e.getGoal();
                 String journal = e.getJournal();
 

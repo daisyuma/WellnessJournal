@@ -2,6 +2,8 @@ package ui;
 
 import model.Plant;
 
+import java.io.IOException;
+
 public interface PlantListener {
-    public void setPlant(Plant plant, String string);
+    void setPlant(Plant plant, String string);
 }

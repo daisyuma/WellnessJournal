@@ -14,7 +14,7 @@ public class ToolBar extends JPanel implements ActionListener {
     private JButton b2 = new JButton("Tomato");
     private PlantListener plantListener;
 
-    public ToolBar() {
+    ToolBar() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         add(b1);
         add(b2);
@@ -28,7 +28,7 @@ public class ToolBar extends JPanel implements ActionListener {
         setBorder(BorderFactory.createCompoundBorder(outerBorder,innerBorder));
     }
 
-    public void setPlantListener(PlantListener listener) {
+    void setPlantListener(PlantListener listener) {
         this.plantListener = listener;
     }
 
