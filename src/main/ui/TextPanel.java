@@ -22,4 +22,8 @@ public class TextPanel extends JPanel {
     public void askForName() {
         text.setText("Please enter your name");
     }
+
+    public void displayText(String text) {
+        this.text.setText(text);
+    }
 }
