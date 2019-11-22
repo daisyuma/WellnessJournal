@@ -5,10 +5,7 @@ import java.util.EventObject;
 public class EntryEvent extends EventObject {
     private String goal;
     private String journal;
-
-    public EntryEvent(Object source) {  //source of the event. in our case will be the button in our form panel
-        super(source);
-    }
+    private String complete;
 
     EntryEvent(Object source, String goal, String journal) {
         super(source);
@@ -23,4 +20,5 @@ public class EntryEvent extends EventObject {
     String getJournal() {
         return journal;
     }
+
 }

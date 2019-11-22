@@ -9,22 +9,34 @@ import java.awt.event.ActionListener;
 public class EntryPanel extends JPanel {
     private JLabel goalLabel;
     private JLabel journalLabel;
-    private JTextField goalField;
     private JTextField journalField;
     private JButton submitButton;
     private EntryListener entryListener;
     private GridBagConstraints gc = new GridBagConstraints();
+    private JList<String> healthyGoalList;
+    private CompleteListener completeListener;
 
     EntryPanel() {
         goalLabel = new JLabel("Goal: ");
         journalLabel = new JLabel("Journal: ");
-        goalField = new JTextField(10);
+        healthyGoalList = new JList<>();
         journalField = new JTextField(10);
         submitButton = new JButton("ok!");
         setUpSize();
         setUpLayout();
         setUpBorder();
         setSubmitButton();
+        setUpList();
+    }
+
+    private void setUpList() {
+        DefaultListModel completeModel = new DefaultListModel();
+        completeModel.addElement("exercise");
+        completeModel.addElement("drink_water");
+        completeModel.addElement("eat_healthy");
+        healthyGoalList.setModel(completeModel);
+        healthyGoalList.setPreferredSize(new Dimension(100, 60));
+        healthyGoalList.setBorder(BorderFactory.createEtchedBorder());
     }
 
     //MODIFIES: this
@@ -51,21 +63,23 @@ public class EntryPanel extends JPanel {
 
         /////FIRST ROW//////
         gc.weightx = 20;
+        gc.weighty = 3;
         gc.anchor = GridBagConstraints.LINE_END;
-        setComponentPosition(goalLabel,0, 0, 5);
+        setComponentPosition(goalLabel, 0, 0, 5);
         gc.anchor = GridBagConstraints.LINE_START;
-        setComponentPosition(goalField,1,0,0);
+        setComponentPosition(healthyGoalList, 1, 0, 0);
 
         //SECOND ROW
         gc.anchor = GridBagConstraints.LINE_END;
-        setComponentPosition(journalLabel,0,1,5);
+        setComponentPosition(journalLabel, 0, 1, 5);
         gc.anchor = GridBagConstraints.LINE_START;
-        setComponentPosition(journalField, 1,1,0);
+        setComponentPosition(journalField, 1, 1, 0);
 
-        ///THIRD ROW////
-        setComponentPosition(submitButton,1,2,0);
+        //THIRD ROW
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
         gc.weighty = 1;
+        setComponentPosition(submitButton, 1, 2, 0);
+
     }
 
     //EFFECTS: sets up first row in the Panel in this format
@@ -86,7 +100,7 @@ public class EntryPanel extends JPanel {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String goal = goalField.getText();
+                String goal = healthyGoalList.getSelectedValue();
                 String journal = journalField.getText();  //pass this info to main Frame
                 EntryEvent entryEvent = new EntryEvent(this, goal, journal);
                 if (entryListener != null) {

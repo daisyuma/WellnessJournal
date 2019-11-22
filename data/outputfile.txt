@@ -1,21 +1,4 @@
 drink_water i feel good
-eat_healthy I ate an apple today
-exercise my scanner is not working properly
-exercise my scanner keeps failing
-exercise i feel good
-drink_water today is rainy
-exercise i feel good
-drink_water today is rainy
-wake_up_early  want my refactoring to work
-drink_water i lost my water bottle
-drink_water i feel good
-exercise iuhuoho
-exercise i want my observer to work
-exercise i feel good
-drink_water today is rainy
-exercise i feel good
-drink_water today is rainy
-exercise i want my observer to work
-I want my observer to work! yay
-exercise duofhoeqd
-exercise fuqwhdowqq
+drink_water yay
+exercise please run
+exercise yayyyyy
