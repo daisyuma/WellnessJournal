@@ -14,7 +14,6 @@ public class EntryPanel extends JPanel {
     private EntryListener entryListener;
     private GridBagConstraints gc = new GridBagConstraints();
     private JList<String> healthyGoalList;
-    private CompleteListener completeListener;
 
     EntryPanel() {
         goalLabel = new JLabel("Goal: ");

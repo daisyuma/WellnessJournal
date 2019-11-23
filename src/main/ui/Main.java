@@ -11,17 +11,17 @@ public class Main {
         JFrame.setDefaultLookAndFeelDecorated(true);
 
         //Create and set up the window.
-        JFrame frame = new JFrame("CardLayoutDemo");
+        JFrame frame = new JFrame("Wellness Journal");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.
-        CardLayout demo = new CardLayout();
-        demo.addComponentToPane(frame.getContentPane());
+        CardLayout mainCards = new CardLayout();
+        mainCards.addComponentToPane(frame.getContentPane());
 
         //Display the window.
         frame.pack();
         frame.setVisible(true);
-        demo.displayWeather();
+        mainCards.displayWeather();
     }
 
 

@@ -19,7 +19,6 @@ public class WellnessJournal {
 
 
     public WellnessJournal() throws IOException, ParseException {
-
         welcome();
         myUser = new User();
         myPlant = askPlant();

@@ -12,19 +12,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class CardLayout extends Component implements ItemListener {
+public class CardLayout extends Component {
     JPanel cards; //a panel that uses CardLayout
     static final String TEXTPANEL = "TextPanel";
     static final String TOOLPANEL = "ToolPanel";
     static final String ENTRYPANEL = "EntryPanel";
+    static final String WELCOMEPANEL = "WelcomePanel";
     private TextPanel textPanel = new TextPanel();
+    private WelcomePanel welcomePanel = new WelcomePanel();
     private ToolBar toolPanel = new ToolBar();
     private EntryPanel entryPanel = new EntryPanel();
-    private User myUser;
+    private User myUser = new User();
     private Plant myPlant;
     private WebReader webReader = new WebReader();
 
@@ -32,10 +33,9 @@ public class CardLayout extends Component implements ItemListener {
     }
 
     public void addComponentToPane(Container pane) throws IOException, ParseException {
-        //Put the JComboBox in a JPanel to get a nicer look.
-
         //Create the panel that contains the "cards".
         cards = new JPanel(new java.awt.CardLayout());
+        cards.add(welcomePanel, WELCOMEPANEL);
         cards.add(textPanel, TEXTPANEL);
         cards.add(toolPanel, TOOLPANEL);
         cards.add(entryPanel, ENTRYPANEL);
@@ -44,21 +44,29 @@ public class CardLayout extends Component implements ItemListener {
 
     //EFFECTS: set myPlant to the plant Button chosen by User
     public void setPlant() {
-        java.awt.CardLayout cl = (java.awt.CardLayout) (cards.getLayout());
-        cl.show(cards, TOOLPANEL); //TODO: refactor this out
+        switchCard(TOOLPANEL);
         toolPanel.setPlantListener(new PlantListener() {
             @Override
             public void setPlant(Plant plant, String string) {
                 myPlant = plant;
+                try {
+                    myPlant.loadHeight();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 JOptionPane.showMessageDialog(null, "your plant has been set to " + string);
                 setEntryOfTheDay();
             }
         });
     }
 
-    public HealthyEntry setEntryOfTheDay() {
+    public void switchCard(String panel) {
         java.awt.CardLayout cl = (java.awt.CardLayout) (cards.getLayout());
-        cl.show(cards, ENTRYPANEL);
+        cl.show(cards, panel);
+    }
+
+    public HealthyEntry setEntryOfTheDay() {
+        switchCard(ENTRYPANEL);
         HealthyEntry myEntry = new HealthyEntry();
         entryPanel.setEntryListener(new EntryListener() {
             public void formSubmitted(EntryEvent e) {
@@ -67,7 +75,6 @@ public class CardLayout extends Component implements ItemListener {
                 try {
                     myEntry.setGoal(goal);
                     myEntry.setJournal(journal);
-                    myUser = new User();
                     setUpUser(myEntry);
                     askComplete();
                 } catch (EmptyInputException | IOException ei) {
@@ -82,22 +89,16 @@ public class CardLayout extends Component implements ItemListener {
         myUser.addEntry(myEntry);
         myUser.saveEntry();
         this.myUser = myUser.loadEntry();
+        myUser.loadPoint();
     }
-
 
 
     //EFFECTS: ask the User if want to load all the entries
     // - if User input YES, load all entries
     // - if NO, prompt user to input goal to load from
-    public void askLoadAll() throws IOException {
-        java.awt.CardLayout cl = (java.awt.CardLayout) (cards.getLayout());
-        myUser.addPoint(false);
-        myUser.savePoint();
-        //TODO: refactor this out into helper methods
-        myPlant.changeStage();
-        myPlant.saveHeight();  ///bring all the souts to the UI
-        cl.show(cards, TEXTPANEL);
-        textPanel.displayText(null);
+    public void askLoadAll() {
+        switchCard(TEXTPANEL);
+        textPanel.displayText(null); // just to get rid of weather
         int loadByGoalInput = JOptionPane.showConfirmDialog(this, "Do you want to load all the entries?",
                 "Load Format?", JOptionPane.YES_NO_OPTION);
         if (loadByGoalInput == JOptionPane.YES_OPTION) {
@@ -115,6 +116,17 @@ public class CardLayout extends Component implements ItemListener {
         }
     }
 
+    private void plantGrowAndChangeStage() {
+        myPlant.grow();
+        myPlant.changeStage();
+        try {
+            myPlant.saveHeight();  //TODO: bring all the souts to the UI
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void loadSpecificGoal(String goal) throws InvalidInputException {
         myUser.setEntriesMap();
         if (!myUser.getEntriesMap().containsKey(goal)) {
@@ -127,34 +139,37 @@ public class CardLayout extends Component implements ItemListener {
         }
     }
 
-    public void itemStateChanged(ItemEvent evt) {
-        java.awt.CardLayout cl = (java.awt.CardLayout) (cards.getLayout());
-        cl.show(cards, (String) evt.getItem());
-    }
 
     public void displayWeather() throws IOException, ParseException {
-        textPanel.displayText(webReader.weatherForecast());
-        setPlant();
+        welcomePanel.appendText("Welcome to Wellness Journal");
+        welcomePanel.appendText(webReader.weatherForecast());
+        welcomePanel.setStartListener(new StartListener() {
+            @Override
+            public void start() {
+                setPlant();
+            }
+        });
     }
 
 
     public void askComplete() throws IOException {
+        myUser.setPlant(myPlant);
         int answer = JOptionPane.showConfirmDialog(this,
                 "Did you complete your goal?",
                 "Complete?",
                 JOptionPane.YES_NO_OPTION);
         if (answer == JOptionPane.YES_OPTION) {
             myUser.addPoint(true);
-            myUser.setPlant(myPlant);
-            myPlant.grow();
+        } else {
+            myUser.addPoint(false);
         }
+        plantGrowAndChangeStage();
+        myUser.savePoint();
         askLoadAll();
-
     }
 
     private void displayEntry(String goal, String journal) {
-        java.awt.CardLayout cl = (java.awt.CardLayout) (cards.getLayout());
-        cl.show(cards, TEXTPANEL);
+        switchCard(TEXTPANEL);
         textPanel.appendText("Goal: " + goal + " | " + "Journal:" + journal);
     }
 }
