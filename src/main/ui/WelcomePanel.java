@@ -1,20 +1,19 @@
 package ui;
 
-import org.json.simple.parser.ParseException;
+
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class WelcomePanel extends JPanel {
     private TextArea text = new TextArea();
     private JButton startButton = new JButton("Get Started!");
     private StartListener startListener;
 
-    public WelcomePanel() throws IOException, ParseException {
+    public WelcomePanel() {
         setUp();
     }
 
@@ -29,6 +28,7 @@ public class WelcomePanel extends JPanel {
     }
 
     private void setStartButton() {
+        setUpSize(300,200, startButton);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,13 +39,16 @@ public class WelcomePanel extends JPanel {
         });
     }
 
+    private void setUpSize(int width, int height, JComponent component) {
+        Dimension dim = component.getPreferredSize();
+        dim.setSize(width, height);
+        component.setPreferredSize(dim);
+    }
+
     void setStartListener(StartListener startListener) {
         this.startListener = startListener;
     }
 
-    void displayText(String text) {
-        this.text.setText(text);
-    }
 
     void appendText(String text) {
         this.text.append(text + "\n");

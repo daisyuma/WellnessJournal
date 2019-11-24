@@ -24,7 +24,6 @@ public class User implements Loadable, Saveable {
 
     //getters
 
-
     //EFFECTS: returns the user's name
     public String getUserName() {
         return this.name;

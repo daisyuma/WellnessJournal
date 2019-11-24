@@ -14,6 +14,8 @@ public class EntryManager {
     private ArrayList<HealthyEntry> entries;
     private HashMap<String, ArrayList<HealthyEntry>> entriesMap;
 
+
+
     public EntryManager() {
         this.entries = new ArrayList<>();
         this.entriesMap = new HashMap<>();
@@ -28,6 +30,9 @@ public class EntryManager {
         return entries.get(i);
     }
 
+
+    //MODIFIES: this
+    //EFFECTS: adds a HealthyEntry to entries
     public void addEntry(HealthyEntry entry) {
         entries.add(entry);
     }

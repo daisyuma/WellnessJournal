@@ -10,8 +10,6 @@ import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -29,10 +27,10 @@ public class CardLayout extends Component {
     private Plant myPlant;
     private WebReader webReader = new WebReader();
 
-    public CardLayout() throws IOException, ParseException {
+    public CardLayout() {
     }
 
-    public void addComponentToPane(Container pane) throws IOException, ParseException {
+    void addComponentToPane(Container pane) {
         //Create the panel that contains the "cards".
         cards = new JPanel(new java.awt.CardLayout());
         cards.add(welcomePanel, WELCOMEPANEL);
@@ -42,8 +40,19 @@ public class CardLayout extends Component {
         pane.add(cards, BorderLayout.CENTER);
     }
 
+    void displayWeather() throws IOException, ParseException {
+        welcomePanel.appendText("Welcome to Wellness Journal");
+        welcomePanel.appendText(webReader.weatherForecast());
+        welcomePanel.setStartListener(new StartListener() {
+            @Override
+            public void start() {
+                setPlant();
+            }
+        });
+    }
+
     //EFFECTS: set myPlant to the plant Button chosen by User
-    public void setPlant() {
+    private void setPlant() {
         switchCard(TOOLPANEL);
         toolPanel.setPlantListener(new PlantListener() {
             @Override
@@ -60,12 +69,7 @@ public class CardLayout extends Component {
         });
     }
 
-    public void switchCard(String panel) {
-        java.awt.CardLayout cl = (java.awt.CardLayout) (cards.getLayout());
-        cl.show(cards, panel);
-    }
-
-    public HealthyEntry setEntryOfTheDay() {
+    private void setEntryOfTheDay() {
         switchCard(ENTRYPANEL);
         HealthyEntry myEntry = new HealthyEntry();
         entryPanel.setEntryListener(new EntryListener() {
@@ -82,9 +86,67 @@ public class CardLayout extends Component {
                 }
             }
         });
-        return myEntry;
     }
 
+    private void askComplete() throws IOException {
+        int before = myUser.getPoints();
+        myUser.setPlant(myPlant);
+        int answer = JOptionPane.showConfirmDialog(this,
+                "Did you complete your goal?",
+                "Complete?",
+                JOptionPane.YES_NO_OPTION);
+        if (answer == JOptionPane.YES_OPTION) {
+            myUser.addPoint(true);
+            int after = myUser.getPoints();
+            updatePoint(before, after);
+        } else {
+            myUser.addPoint(false);
+        }
+        plantGrowAndChangeStage();
+        myUser.savePoint();
+        askLoadAll();
+    }
+
+
+    private void askLoadAll() {
+        switchCard(TEXTPANEL);
+        int loadByGoalInput = JOptionPane.showConfirmDialog(this,
+                "Do you want to load all the goals?",
+                "Load Format?", JOptionPane.YES_NO_OPTION);
+        if (loadByGoalInput == JOptionPane.YES_OPTION) {
+            loadAllEntries();
+            //TODO: implement else load by goal, maybe change JOptionPane type
+        } else if (loadByGoalInput == JOptionPane.NO_OPTION) {
+            String goalToLoadFrom = JOptionPane.showInputDialog("what goal do you want to load from?");
+            try {
+                loadSpecificGoal(goalToLoadFrom);
+            } catch (InvalidInputException e) {
+                textPanel.appendTextInEntriesField("You have no entries for this goal");
+            }
+        }
+        displayStat();
+    }
+
+    private void displayStat() {
+        displayPlantStat();
+        displayPointStat();
+    }
+
+    private void displayPlantStat() {
+        int height = myPlant.getHeight();
+        String heightString = Integer.toString(height);
+        String stage = myPlant.getStage();
+        textPanel.displayPlantStat("Plant Height: " + heightString);
+        textPanel.displayPlantStat("Plant Stage: " + stage);
+    }
+
+    private void displayPointStat() {
+        int point = myUser.getPoints();
+        String pointString = Integer.toString(point);
+        textPanel.displayPointStat("You have " + pointString + " points now!");
+    }
+
+    //TOOLS:
     private void setUpUser(HealthyEntry myEntry) throws IOException {
         myUser.addEntry(myEntry);
         myUser.saveEntry();
@@ -92,27 +154,21 @@ public class CardLayout extends Component {
         myUser.loadPoint();
     }
 
+    private void updatePoint(int before, int after) {
+        JOptionPane.showMessageDialog(null,
+                "you have " + before + " points before \n"
+                        + "now you have " + after + " points!");
+    }
 
-    //EFFECTS: ask the User if want to load all the entries
-    // - if User input YES, load all entries
-    // - if NO, prompt user to input goal to load from
-    public void askLoadAll() {
-        switchCard(TEXTPANEL);
-        textPanel.displayText(null); // just to get rid of weather
-        int loadByGoalInput = JOptionPane.showConfirmDialog(this, "Do you want to load all the entries?",
-                "Load Format?", JOptionPane.YES_NO_OPTION);
-        if (loadByGoalInput == JOptionPane.YES_OPTION) {
-            for (HealthyEntry entry : myUser.getEntries()) {
-                displayEntry(entry.getGoal(), entry.getJournal());
-            }
-            //TODO: implement else load by goal, maybe change JOptionPane type
-        } else if (loadByGoalInput == JOptionPane.NO_OPTION) {
-            String goalToLoadFrom = JOptionPane.showInputDialog("what goal do you want to load from?");
-            try {
-                loadSpecificGoal(goalToLoadFrom);
-            } catch (InvalidInputException e) {
-                textPanel.displayText("You have no entries for this goal");
-            }
+    public void switchCard(String panel) {
+        java.awt.CardLayout cl = (java.awt.CardLayout) (cards.getLayout());
+        cl.show(cards, panel);
+    }
+
+
+    private void loadAllEntries() {
+        for (HealthyEntry entry : myUser.getEntries()) {
+            displayEntry(entry.getGoal(), entry.getJournal());
         }
     }
 
@@ -139,37 +195,8 @@ public class CardLayout extends Component {
         }
     }
 
-
-    public void displayWeather() throws IOException, ParseException {
-        welcomePanel.appendText("Welcome to Wellness Journal");
-        welcomePanel.appendText(webReader.weatherForecast());
-        welcomePanel.setStartListener(new StartListener() {
-            @Override
-            public void start() {
-                setPlant();
-            }
-        });
-    }
-
-
-    public void askComplete() throws IOException {
-        myUser.setPlant(myPlant);
-        int answer = JOptionPane.showConfirmDialog(this,
-                "Did you complete your goal?",
-                "Complete?",
-                JOptionPane.YES_NO_OPTION);
-        if (answer == JOptionPane.YES_OPTION) {
-            myUser.addPoint(true);
-        } else {
-            myUser.addPoint(false);
-        }
-        plantGrowAndChangeStage();
-        myUser.savePoint();
-        askLoadAll();
-    }
-
     private void displayEntry(String goal, String journal) {
         switchCard(TEXTPANEL);
-        textPanel.appendText("Goal: " + goal + " | " + "Journal:" + journal);
+        textPanel.appendTextInEntriesField("Goal: " + goal + " | " + "Journal:" + journal);
     }
 }

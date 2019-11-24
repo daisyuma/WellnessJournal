@@ -1,7 +1,5 @@
 drink_water i feel good
-drink_water yay
-exercise please run
-exercise yayyyyy
-drink_water i wan to get things done
-exercise yay
-drink_water huohoik
+eat_healthy gui
+exercise uol
+drink_water i hate my life
+drink_water i drank lots of water today

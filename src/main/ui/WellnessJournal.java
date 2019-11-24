@@ -4,7 +4,6 @@ package ui;
 import exceptions.EmptyInputException;
 import exceptions.InvalidInputException;
 import model.*;
-import network.WebReader;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
