@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,7 +16,9 @@ public class WebReader {
     public BufferedReader br = null;
     public StringBuilder sb = new StringBuilder();
 
-    public static String parseJason(String json) throws ParseException {
+    //REQUIRES:JSON file is valid
+    //EFFECTS: parse a JSON document into String
+    public static String parseJson(String json) throws ParseException {
         JSONParser jsonParser = new JSONParser();
 
         JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
@@ -26,7 +27,8 @@ public class WebReader {
         return descriptionObject.get("description").toString();
     }
 
-
+    //REQUIRES: wifi
+    //EFFECTS: returns the current weather
     public String weatherForecast() throws IOException, ParseException {
 
         try {
@@ -43,7 +45,7 @@ public class WebReader {
                 sb.append(line);
                 sb.append(System.lineSeparator());
             }
-            return "Weather today: " + parseJason(sb.toString());
+            return "Weather today: " + parseJson(sb.toString());
         } finally {
 
             if (br != null) {

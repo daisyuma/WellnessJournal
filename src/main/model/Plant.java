@@ -25,7 +25,7 @@ public abstract class Plant extends Subject {
     }
 
     //MODIFIES: this
-    //EFFECT: - !!!if eligible, grow by GROWTH_REWARD and subtract point and allow growth
+    //EFFECT: if eligible, grow by GROWTH_REWARD and subtract point and allow growth
     //              and set user's points as leftover points,
     //              if not user will have the same points as before, no growth
     public void grow() {
@@ -74,6 +74,7 @@ public abstract class Plant extends Subject {
 
     public abstract void changeStage();
 
+    //EFFECTS: stores the current height in a file
     public void saveHeight() throws IOException {
         List<String> heights = Files.readAllLines(Paths.get("./data/height.txt")); //there's only one line in this file
         Integer updatedHeight = this.height;
@@ -84,7 +85,8 @@ public abstract class Plant extends Subject {
         writer.println(heightString);
         writer.close();
     }
-
+    //MODIFIES:this
+    //EFFECTS: load height to this
     public void loadHeight() throws IOException {
         List<String> heights = Files.readAllLines(Paths.get("./data/height.txt"));//there's only one line in this file
         String heightSoFarString = heights.get(0);

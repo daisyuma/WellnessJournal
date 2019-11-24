@@ -17,6 +17,9 @@ public class WelcomePanel extends JPanel {
         setUp();
     }
 
+    //MODIFIES: this
+    //EFFECTS: set up size, border, and title of this
+    //         - adds component to this
     private void setUp() {
         setLayout(new BorderLayout());
         Border innerBorder = BorderFactory.createTitledBorder("Welcome to WellnessJournal");
@@ -27,6 +30,9 @@ public class WelcomePanel extends JPanel {
         setStartButton();
     }
 
+    //MODIFIES: this
+    //EFFECTS: set up the start Button,
+    //    - if start button is clicked, calls start() on startListener
     private void setStartButton() {
         setUpSize(300,200, startButton);
         startButton.addActionListener(new ActionListener() {

@@ -41,6 +41,7 @@ public class PointKeeper extends Subject {
         }
     }
 
+    //EFFECTS: save current point to a file
     public void savePoint() throws IOException {
         List<String> points = Files.readAllLines(Paths.get("./data/points.txt")); //there's only one line in this file
         Integer point = this.points;
@@ -52,6 +53,9 @@ public class PointKeeper extends Subject {
         writer.close();
     }
 
+
+    //MODIFIES:this
+    //EFFECTS: load point from a file to this
     public void loadPoint() throws IOException {
         List<String> points = Files.readAllLines(Paths.get("./data/points.txt"));//there's only one line in this file
         String pointSoFar = points.get(0);

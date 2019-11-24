@@ -54,7 +54,7 @@ public class EntryManager {
         }
     }
 
-    //EFFECTS: Returns the user's entriesMap
+    //EFFECTS: Returns the user's entriesMap, key:goal value: entries of that goal
     public HashMap<String, ArrayList<HealthyEntry>> getEntriesMap() {
         return entriesMap;
     }
@@ -64,6 +64,8 @@ public class EntryManager {
         return entries.size();
     }
 
+
+    //EFFECTS: saves User's entries to a file
     public void saveEntry() throws IOException {
         List<String> lines = Files.readAllLines(Paths.get("./data/outputfile.txt"));
         List<HealthyEntry> entries = getEntries();
@@ -79,6 +81,9 @@ public class EntryManager {
         }
     }
 
+
+    //MODIFIES:this
+    //EFFECTS: load all entries back the entries field of this
     public User loadEntry() throws IOException {
         List<String> lines = Files.readAllLines(Paths.get("./data/outputfile.txt"));
         User myUser = new User();
@@ -98,7 +103,9 @@ public class EntryManager {
         return myUser;
     }
 
-    public static ArrayList<String> splitOnFirstSpace(String line) {
+
+    //EFFECTS: split a string on the first space encountered by cursor and stores substrings in a collection
+    private static ArrayList<String> splitOnFirstSpace(String line) {
         ArrayList<String> splitOnFirstSpace = new ArrayList<>();
         int i = line.indexOf(" ");
         String goal = line.substring(0, i);

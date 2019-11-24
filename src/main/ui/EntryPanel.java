@@ -15,6 +15,8 @@ public class EntryPanel extends JPanel {
     private GridBagConstraints gc = new GridBagConstraints();
     private JList<String> healthyGoalList;
 
+
+
     EntryPanel() {
         goalLabel = new JLabel("Goal: ");
         journalLabel = new JLabel("Journal: ");
@@ -28,6 +30,8 @@ public class EntryPanel extends JPanel {
         setUpList();
     }
 
+
+    //EFFECTS: set up the list of goals to be chosen from
     private void setUpList() {
         DefaultListModel completeModel = new DefaultListModel();
         completeModel.addElement("exercise");

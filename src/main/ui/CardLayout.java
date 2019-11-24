@@ -30,6 +30,9 @@ public class CardLayout extends Component {
     public CardLayout() {
     }
 
+
+    //MODIFIES: this
+    //EFFECTS: creates a new JPanel with CardLayout that contains three cards, and add them to pane
     void addComponentToPane(Container pane) {
         //Create the panel that contains the "cards".
         cards = new JPanel(new java.awt.CardLayout());
@@ -40,6 +43,8 @@ public class CardLayout extends Component {
         pane.add(cards, BorderLayout.CENTER);
     }
 
+
+    //EFFECTS: display Welcome message and weather to user, move to setPlant if startButton is clicked
     void displayWeather() throws IOException, ParseException {
         welcomePanel.appendText("Welcome to Wellness Journal");
         welcomePanel.appendText(webReader.weatherForecast());
@@ -51,7 +56,9 @@ public class CardLayout extends Component {
         });
     }
 
-    //EFFECTS: set myPlant to the plant Button chosen by User
+    //MODIFIES: this
+    //EFFECTS: set myPlant to the plant Button chosen by User, move on to setEntry step after chooses plant
+    //         - load current height back to plant from a file
     private void setPlant() {
         switchCard(TOOLPANEL);
         toolPanel.setPlantListener(new PlantListener() {
@@ -69,6 +76,10 @@ public class CardLayout extends Component {
         });
     }
 
+
+    //MODIFIES: this
+    //EFFECTS: set Entry to user inputs and add that entry to the User,
+    // - if submit button is clicked, ask if User has completed their goal
     private void setEntryOfTheDay() {
         switchCard(ENTRYPANEL);
         HealthyEntry myEntry = new HealthyEntry();
@@ -88,6 +99,12 @@ public class CardLayout extends Component {
         });
     }
 
+
+    //EFFECTS: asks if user has completed goal
+    //  - if YES, adds points to User
+    //  - allow Plant to grow
+    //  - save points to a file
+    //  - move on to askLoadAll()
     private void askComplete() throws IOException {
         int before = myUser.getPoints();
         myUser.setPlant(myPlant);
@@ -108,6 +125,10 @@ public class CardLayout extends Component {
     }
 
 
+
+    //EFFECTS: asks how User wants to load all their entries
+    //    - if YES, load all entries
+    //    - if NO, load by goal
     private void askLoadAll() {
         switchCard(TEXTPANEL);
         int loadByGoalInput = JOptionPane.showConfirmDialog(this,
@@ -127,6 +148,8 @@ public class CardLayout extends Component {
         displayStat();
     }
 
+
+    //EFFECTS: display plant stat and point stat on TextPanel
     private void displayStat() {
         displayPlantStat();
         displayPointStat();
@@ -147,6 +170,12 @@ public class CardLayout extends Component {
     }
 
     //TOOLS:
+
+
+    //MODIFIES: this
+    //EFFECTS: - add entry to a User
+    //         - save and load entries from a file
+    //         - load points back to user
     private void setUpUser(HealthyEntry myEntry) throws IOException {
         myUser.addEntry(myEntry);
         myUser.saveEntry();
@@ -154,24 +183,32 @@ public class CardLayout extends Component {
         myUser.loadPoint();
     }
 
+
+    //EFFECTS: update point changes to user with a pop-up message box
     private void updatePoint(int before, int after) {
         JOptionPane.showMessageDialog(null,
                 "you have " + before + " points before \n"
                         + "now you have " + after + " points!");
     }
 
+
+    //EFFECTS: switch the card currently being displayed to the ID passed in as parameter
     public void switchCard(String panel) {
         java.awt.CardLayout cl = (java.awt.CardLayout) (cards.getLayout());
         cl.show(cards, panel);
     }
 
 
+    //EFFECTS: load all entries in User
     private void loadAllEntries() {
         for (HealthyEntry entry : myUser.getEntries()) {
             displayEntry(entry.getGoal(), entry.getJournal());
         }
     }
 
+
+    //EFFECTS: allows plant to grow and change stage
+    //         - save height to a file
     private void plantGrowAndChangeStage() {
         myPlant.grow();
         myPlant.changeStage();
@@ -183,6 +220,7 @@ public class CardLayout extends Component {
     }
 
 
+    //EFFECTS: only display entries of a specific goal chosen by the user
     private void loadSpecificGoal(String goal) throws InvalidInputException {
         myUser.setEntriesMap();
         if (!myUser.getEntriesMap().containsKey(goal)) {
@@ -195,6 +233,7 @@ public class CardLayout extends Component {
         }
     }
 
+    //EFFECTS: display entries on textPanel by a specific format
     private void displayEntry(String goal, String journal) {
         switchCard(TEXTPANEL);
         textPanel.appendTextInEntriesField("Goal: " + goal + " | " + "Journal:" + journal);

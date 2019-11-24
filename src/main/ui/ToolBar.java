@@ -28,12 +28,15 @@ public class ToolBar extends JPanel implements ActionListener {
         setBorder(BorderFactory.createCompoundBorder(outerBorder,innerBorder));
     }
 
+
     void setPlantListener(PlantListener listener) {
         this.plantListener = listener;
     }
 
 
     @Override
+
+    //EFFECTS: sends the type of Plant chosen by User to the PlantListener
     public void actionPerformed(ActionEvent e) {
         JButton jbutton = (JButton) e.getSource();
         if (jbutton == b1) {

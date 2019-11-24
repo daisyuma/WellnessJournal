@@ -5,6 +5,8 @@ public class HeightMonitor implements Observer {
         super();
     }
 
+
+    //EFFECTS: prints to console the height change of plant
     public void update(int before, int after) {
         System.out.println("congrats! Your plant is growing!");
         System.out.println("your plant was " + before + " cm");

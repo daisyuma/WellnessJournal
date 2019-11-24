@@ -3,3 +3,4 @@ eat_healthy gui
 exercise uol
 drink_water i hate my life
 drink_water i drank lots of water today
+drink_water sowhcoew
