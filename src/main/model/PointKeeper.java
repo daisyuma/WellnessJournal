@@ -14,7 +14,8 @@ public class PointKeeper extends Subject {
 
     public PointKeeper() {
         points = 0;
-        addObserver(new PointMonitor()); ;
+        addObserver(new PointMonitor());
+        ;
     }
 
     //EFFECTS: return the number of points user have
@@ -37,7 +38,7 @@ public class PointKeeper extends Subject {
             int before = this.points;
             this.points = points + POINTS_FOR_GOAL;
             int after = this.points;
-            notify(before,after);
+            notify(before, after);
         }
     }
 

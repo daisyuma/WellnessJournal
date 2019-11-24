@@ -16,7 +16,6 @@ public class EntryPanel extends JPanel {
     private JList<String> healthyGoalList;
 
 
-
     EntryPanel() {
         goalLabel = new JLabel("Goal: ");
         journalLabel = new JLabel("Journal: ");

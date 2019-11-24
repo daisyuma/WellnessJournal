@@ -1,7 +1,6 @@
 package ui;
 
 
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -34,7 +33,7 @@ public class WelcomePanel extends JPanel {
     //EFFECTS: set up the start Button,
     //    - if start button is clicked, calls start() on startListener
     private void setStartButton() {
-        setUpSize(300,200, startButton);
+        setUpSize(300, 200, startButton);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

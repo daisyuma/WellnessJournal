@@ -71,7 +71,7 @@ public class CardLayout extends Component {
                     e.printStackTrace();
                 }
                 JOptionPane.showMessageDialog(null, "your plant has been set to " + string);
-                setEntryOfTheDay();
+                setEntry();
             }
         });
     }
@@ -80,7 +80,7 @@ public class CardLayout extends Component {
     //MODIFIES: this
     //EFFECTS: set Entry to user inputs and add that entry to the User,
     // - if submit button is clicked, ask if User has completed their goal
-    private void setEntryOfTheDay() {
+    private void setEntry() {
         switchCard(ENTRYPANEL);
         HealthyEntry myEntry = new HealthyEntry();
         entryPanel.setEntryListener(new EntryListener() {
@@ -119,11 +119,10 @@ public class CardLayout extends Component {
         } else {
             myUser.addPoint(false);
         }
-        plantGrowAndChangeStage();
+        growPlant();
         myUser.savePoint();
         askLoadAll();
     }
-
 
 
     //EFFECTS: asks how User wants to load all their entries
@@ -142,7 +141,7 @@ public class CardLayout extends Component {
             try {
                 loadSpecificGoal(goalToLoadFrom);
             } catch (InvalidInputException e) {
-                textPanel.appendTextInEntriesField("You have no entries for this goal");
+                textPanel.displayEntries("You have no entries for this goal");
             }
         }
         displayStat();
@@ -209,7 +208,7 @@ public class CardLayout extends Component {
 
     //EFFECTS: allows plant to grow and change stage
     //         - save height to a file
-    private void plantGrowAndChangeStage() {
+    private void growPlant() {
         myPlant.grow();
         myPlant.changeStage();
         try {
@@ -236,6 +235,6 @@ public class CardLayout extends Component {
     //EFFECTS: display entries on textPanel by a specific format
     private void displayEntry(String goal, String journal) {
         switchCard(TEXTPANEL);
-        textPanel.appendTextInEntriesField("Goal: " + goal + " | " + "Journal:" + journal);
+        textPanel.displayEntries("Goal: " + goal + " | " + "Journal:" + journal);
     }
 }

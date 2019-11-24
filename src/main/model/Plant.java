@@ -43,7 +43,6 @@ public abstract class Plant extends Subject {
     }
 
 
-
     //getters
     //EFFECTS: get the stage of the plant
     public String getStage() {
@@ -85,6 +84,7 @@ public abstract class Plant extends Subject {
         writer.println(heightString);
         writer.close();
     }
+
     //MODIFIES:this
     //EFFECTS: load height to this
     public void loadHeight() throws IOException {

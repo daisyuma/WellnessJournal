@@ -15,7 +15,6 @@ public class EntryManager {
     private HashMap<String, ArrayList<HealthyEntry>> entriesMap;
 
 
-
     public EntryManager() {
         this.entries = new ArrayList<>();
         this.entriesMap = new HashMap<>();

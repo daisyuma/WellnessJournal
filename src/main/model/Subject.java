@@ -19,7 +19,7 @@ public abstract class Subject {
     //EFFECTS: notify each observer to update
     public void notify(int before, int after) {
         for (Observer observer : observers) {
-            observer.update(before,after);
+            observer.update(before, after);
         }
     }
 }

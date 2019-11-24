@@ -24,8 +24,8 @@ public class ToolBar extends JPanel implements ActionListener {
         dim.setSize(400, 600);
         setPreferredSize(dim);
         Border innerBorder = BorderFactory.createTitledBorder("Choose Your Plant");
-        Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
-        setBorder(BorderFactory.createCompoundBorder(outerBorder,innerBorder));
+        Border outerBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+        setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
     }
 
 

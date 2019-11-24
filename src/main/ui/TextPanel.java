@@ -12,7 +12,7 @@ public class TextPanel extends JPanel {
 
     TextPanel() {
         setLayout(new BorderLayout());
-        createBorder(this, "Wellness Journal",5);
+        createBorder(this, "Wellness Journal", 5);
         setUpEntriesPanel();
         setUpPlantStatPanel();
         setUpPointStatPanel();
@@ -25,7 +25,7 @@ public class TextPanel extends JPanel {
         JPanel entriesPanel = new JPanel();
         setUpSize(400, 700, entries);
         entriesPanel.add(entries);
-        createBorder(entriesPanel,"Healthy Entry",0);
+        createBorder(entriesPanel, "Healthy Entry", 0);
         add(entriesPanel, BorderLayout.WEST);
     }
 
@@ -35,7 +35,7 @@ public class TextPanel extends JPanel {
         JPanel plantStatPanel = new JPanel();
         setUpSize(400, 700, plantStat);
         plantStatPanel.add(plantStat);
-        createBorder(plantStatPanel, "Plant Status",0);
+        createBorder(plantStatPanel, "Plant Status", 0);
         add(plantStatPanel, BorderLayout.CENTER);
 
     }
@@ -46,7 +46,7 @@ public class TextPanel extends JPanel {
         JPanel pointStatPanel = new JPanel();
         setUpSize(400, 700, pointStat);
         pointStatPanel.add(pointStat);
-        createBorder(pointStatPanel, "Points",0);
+        createBorder(pointStatPanel, "Points", 0);
         add(pointStatPanel, BorderLayout.EAST);
     }
 
@@ -69,7 +69,7 @@ public class TextPanel extends JPanel {
 
 
     //EFFECTS: append and display the given text
-    void appendTextInEntriesField(String text) {
+    void displayEntries(String text) {
         this.entries.append(text + "\n");
     }
 
