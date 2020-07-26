@@ -14,9 +14,9 @@ public abstract class Plant extends Subject {
     protected User user = null;
     protected static int GROWTH_REWARD = 2; //centimeter
     protected static int POINTS_FOR_GROWTH = 20;
-    protected static int HEIGHT_TO_CHANGE_STATE_1 = 40;
-    protected static int HEIGhT_TO_CHANGE_STATE_2 = 60;
-    protected static int HEIGHT_TO_CHANGE_STATE_FINAL = 100;
+    protected static int HEIGHT_TO_CHANGE_STAGE_1 = 40;
+    protected static int HEIGhT_TO_CHANGE_STAGE_2 = 60;
+    protected static int HEIGHT_TO_CHANGE_STAGE_FINAL = 100;
 
     public Plant() {
         height = 0;

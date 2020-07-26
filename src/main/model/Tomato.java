@@ -9,16 +9,16 @@ public class Tomato extends Plant {
     //MODIFIES :this
     //EFFECTS: if height is enough, change stage to sprout -> fruit -> ripen
     public void changeStage() {
-        if (height < HEIGHT_TO_CHANGE_STATE_1) {
+        if (height < HEIGHT_TO_CHANGE_STAGE_1) {
             System.out.println("Tomato: You need to work harder!");
         }
-        if (height >= HEIGHT_TO_CHANGE_STATE_1 && height < HEIGhT_TO_CHANGE_STATE_2) {
+        if (height >= HEIGHT_TO_CHANGE_STAGE_1 && height < HEIGhT_TO_CHANGE_STAGE_2) {
             stage = "sprout";
             System.out.println("Tomato: fruit is starting to grow!");
-        } else if (height >= HEIGhT_TO_CHANGE_STATE_2 && height < HEIGHT_TO_CHANGE_STATE_FINAL) {
+        } else if (height >= HEIGhT_TO_CHANGE_STAGE_2 && height < HEIGHT_TO_CHANGE_STAGE_FINAL) {
             stage = "fruit";
             System.out.println("Tomato: The fruit is growing!");
-        } else if (height >= HEIGHT_TO_CHANGE_STATE_FINAL) {
+        } else if (height >= HEIGHT_TO_CHANGE_STAGE_FINAL) {
             stage = "ripe";
             System.out.println("Tomato: I'm ripening!");
         }
